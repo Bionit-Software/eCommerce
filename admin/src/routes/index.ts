@@ -6,10 +6,10 @@ const FormElements = lazy(() => import('../pages/Form/FormElements'));
 const FormLayout = lazy(() => import('../pages/Form/FormLayout'));
 const Profile = lazy(() => import('../pages/Profile'));
 const Settings = lazy(() => import('../pages/Settings'));
-const Tables = lazy(() => import('../pages/Tables'));
+const TablesProducto = lazy(() => import('../pages/TablesProducto'));
+const ProductoAdd = lazy(() => import('../pages/ProductoAdd'));
 const Alerts = lazy(() => import('../pages/UiElements/Alerts'));
 const Buttons = lazy(() => import('../pages/UiElements/Buttons'));
-
 const coreRoutes = [
   {
     path: '/calendar',
@@ -32,9 +32,14 @@ const coreRoutes = [
     component: FormLayout,
   },
   {
-    path: '/tables',
-    title: 'Tables',
-    component: Tables,
+    path: '/tablas/productos',
+    title: 'Tabla Productos',
+    component: TablesProducto,
+  },
+  {
+    path: '/tablas/productos/add',
+    title: 'Añadir Producto',
+    component: ProductoAdd,
   },
   {
     path: '/settings',

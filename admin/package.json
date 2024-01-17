@@ -1,5 +1,5 @@
 {
-  "name": "tailadmin-react-free",
+  "name": "admin-ecommerce",
   "private": true,
   "version": "1.0.5",
   "type": "module",
@@ -8,16 +8,16 @@
     "build": "vite build",
     "preview": "vite preview"
   },
-  "author": {
-    "name": "TailAdmin",
-    "email": "hello@tailadmin.com",
-    "url": "https://tailadmin.com"
-  },
   "dependencies": {
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.15.4",
     "apexcharts": "^3.41.0",
+    "axios": "^1.6.5",
     "headlessui": "^0.0.0",
     "jsvectormap": "^1.5.3",
     "match-sorter": "^6.3.1",
+    "mui": "^0.0.1",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.1",
     "react-dom": "^18.2.0",
