@@ -73,29 +73,29 @@ const TableProductos = ({products}: {products: any}) => {
                 <tr key={product.id} className="border-b border-[#eee] dark:border-strokedark">
                   <td className="py-5 px-4 pl-9 xl:pl-11">
                     <div className="flex items-center">
-                      <div className="w-10 h-10 flex-shrink-0 mr-3">
+                      <div className="w-16 h-16 mr-3 ">
                         <img
-                          className="rounded-full"
                           src={product.url_image}
                           alt=""
+                          className='w-full h-full object-cover'
                         />
                       </div>
                       <div>
                         <h5 className="font-medium text-black dark:text-white">
-                          {product.Nombre}
+                          {product.nombre}
                         </h5>
-                        <p className="text-sm">{product.Descripcion}</p>
+                        <p className="text-sm">{product.descripcion}</p>
                       </div>
                     </div>
                   </td>
                   <td className="py-5 px-4">
                     <p className="text-black dark:text-white">
-                      {product.Precio}
+                      {product.precio}
                     </p>
                   </td>
                   <td className="py-5 px-4">
                     <p className="text-black dark:text-white">
-                      {product.Stock}
+                      {product.stock}
                     </p>
                   </td>
                   <td className="py-5 px-4">
