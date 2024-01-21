@@ -1,4 +1,5 @@
 import { lazy } from 'react';
+import ProductoEdit from '../pages/ProductoEdit';
 
 const Calendar = lazy(() => import('../pages/Calendar'));
 const Chart = lazy(() => import('../pages/Chart'));
@@ -42,6 +43,11 @@ const coreRoutes = [
     path: '/tablas/productos/add',
     title: 'Añadir Producto',
     component: ProductoAdd,
+  },
+  {
+    path: '/tablas/productos/edit',
+    title: 'Editar Producto',
+    component: ProductoEdit,
   },
   {
     path: '/settings',
