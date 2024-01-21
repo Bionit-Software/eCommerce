@@ -3,7 +3,7 @@ import Breadcrumb from '../components/Breadcrumb'
 import { Autocomplete, FormControl, TextField } from '@mui/material'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
-
+import constants from '../constants';
 function ProductoAdd() {
   const [loading, setLoading] = useState(true);
   const [categorias, setCategorias] = useState([]);
@@ -19,9 +19,9 @@ function ProductoAdd() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responseCategorias = await axios.get('http://localhost:3000/categorias/all');
+        const responseCategorias = await axios.get(constants.API_URL + 'categorias/all');
         setCategorias(responseCategorias.data);
-        const responseMarcas = await axios.get('http://localhost:3000/marcas/all');
+        const responseMarcas = await axios.get(constants.API_URL + 'marcas/all');
         setMarcas(responseMarcas.data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -76,13 +76,13 @@ function ProductoAdd() {
         formData.append('idCategoria', categoria);
         formData.append('idMarca', marca);
         formData.append('file', file);
-  
-        const response = await axios.post('http://localhost:3000/productos/add', formData, {
+
+        const response = await axios.post(constants.API_URL + 'productos/add', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         });
-  
+
         console.log(response);
         console.log(response.data);
         navigate('/tablas/productos');
@@ -160,17 +160,6 @@ function ProductoAdd() {
           {/* <!-- Textarea Fields --> */}
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="flex flex-col gap-5.5 p-6.5">
-              {/* <div>
-                <label className="mb-3 block text-black dark:text-white">
-                  Default textarea
-                </label>
-                <textarea
-                  rows={6}
-                  placeholder="Default textarea"
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                ></textarea>
-              </div> */}
-
               <div
                 id="FileUpload"
                 className="relative mb-5.5 block w-full cursor-pointer appearance-none rounded border-2 border-dashed border-primary bg-gray py-4 px-4 dark:bg-meta-4 sm:py-7.5"

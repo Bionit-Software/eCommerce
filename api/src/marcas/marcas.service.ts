@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateMarcaDto } from './dto/create-marca.dto';
 import { UpdateMarcaDto } from './dto/update-marca.dto';
-import db from 'db/db';
+import db from 'src/db';
 
 @Injectable()
 export class MarcasService {

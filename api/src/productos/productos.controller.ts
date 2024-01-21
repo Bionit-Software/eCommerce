@@ -2,15 +2,15 @@ import {
   Controller,
   Get,
   Post,
-  Body,
-  Patch,
+  // Body,
+  // Patch,
   Param,
   Delete,
   Request,
   UseInterceptors,
 } from '@nestjs/common';
 import { ProductosService } from './productos.service';
-import { UpdateProductoDto } from './dto/update-producto.dto';
+// import { UpdateProductoDto } from './dto/update-producto.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
@@ -38,7 +38,11 @@ export class ProductosController {
 
   @Get('all')
   findAll() {
-    return this.productosService.findAll();
+    try {
+      return this.productosService.findAll();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   @Get(':id')
@@ -46,13 +50,13 @@ export class ProductosController {
     return this.productosService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateProductoDto: UpdateProductoDto,
-  ) {
-    return this.productosService.update(+id, updateProductoDto);
-  }
+  // @Patch(':id')
+  // update(
+  //   @Param('id') id: string,
+  //   @Body() updateProductoDto: UpdateProductoDto,
+  // ) {
+  //   return this.productosService.update(+id, updateProductoDto);
+  // }
 
   @Delete(':id')
   remove(@Param('id') id: string) {

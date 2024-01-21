@@ -9,7 +9,8 @@ import { MarcasModule } from './marcas/marcas.module';
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '../../'),
+      // rootPath: join(__dirname, '../../'), por si le pinta no andar
+      rootPath: join(__dirname, '../'),
       renderPath: '/uploads',
     }),
     ProductosModule,

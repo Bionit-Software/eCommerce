@@ -1,8 +1,19 @@
+import axios from "axios";
+import constants from "../constants";
+
 const TableProductos = ({products}: {products: any}) => {
     console.log(products);
     const parsearFecha = (fecha: string) => {
       const fechaParseada = new Date(fecha);
       return fechaParseada.toLocaleDateString();
+    }
+    const handleDelete = (id: number) => {
+      console.log(id);
+      axios.delete(constants.API_URL + 'productos/' + id)
+      .then((response) => {
+        console.log(response);
+        window.location.reload();
+      })
     }
     return (
       <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
@@ -134,7 +145,9 @@ const TableProductos = ({products}: {products: any}) => {
                         />
                       </svg>
                     </button>
-                    <button className="hover:text-primary">
+                    <button 
+                    onClick={() => handleDelete(product.ID)}
+                    className="hover:text-primary">
                       <svg
                         className="fill-current"
                         width="18"

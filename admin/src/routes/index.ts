@@ -10,6 +10,8 @@ const TablesProducto = lazy(() => import('../pages/TablesProducto'));
 const ProductoAdd = lazy(() => import('../pages/ProductoAdd'));
 const Alerts = lazy(() => import('../pages/UiElements/Alerts'));
 const Buttons = lazy(() => import('../pages/UiElements/Buttons'));
+const Paginas = lazy(() => import('../pages/Paginas'));
+
 const coreRoutes = [
   {
     path: '/calendar',
@@ -60,6 +62,11 @@ const coreRoutes = [
     path: '/ui/buttons',
     title: 'Buttons',
     component: Buttons,
+  },
+  {
+    path: '/paginas',
+    title: 'Paginas',
+    component: Paginas,
   },
 ];
 

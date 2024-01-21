@@ -9,13 +9,26 @@ const Breadcrumb = ({ pageName }: BreadcrumbProps) => {
         {pageName}
       </h2>
 
-      <nav>
-        <ol className="flex items-center gap-2">
-          <li>
-            <Link to="/">Dashboard /</Link>
-          </li>
-          <li className="text-primary">{pageName}</li>
-        </ol>
+      <nav className='flex'>
+        {pageName === 'Productos' || 
+        pageName === 'Categorias' ||
+        pageName === 'Marcas' ?
+         (
+          <Link
+            to={`/tablas/${pageName.toLowerCase()}/add`}
+            className="text-primary">
+            Agregar {pageName}
+          </Link>
+        ) : null
+      }
+        {pageName !== 'Productos' && (
+          <ol className="flex items-center gap-2">
+            <li>
+              <Link to="/">Dashboard /</Link>
+            </li>
+            <li className="text-primary">{pageName}</li>
+          </ol>
+        )}
       </nav>
     </div>
   );

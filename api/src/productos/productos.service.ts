@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { CreateProductoDto } from './dto/create-producto.dto';
-import { UpdateProductoDto } from './dto/update-producto.dto';
-import db from 'db/db';
+// import { CreateProductoDto } from './dto/create-producto.dto';
+// import { UpdateProductoDto } from './dto/update-producto.dto';
+import db from 'src/db';
 @Injectable()
 export class ProductosService {
   async create(createProductoDto: any, filename: any) {
@@ -35,11 +35,12 @@ export class ProductosService {
     return `This action returns a #${id} producto`;
   }
 
-  update(id: number, updateProductoDto: UpdateProductoDto) {
-    return `This action updates a #${id} producto`;
-  }
+  // update(id: number, updateProductoDto: UpdateProductoDto) {
+  //   return `This action updates a #${id} producto`;
+  // }
 
-  remove(id: number) {
+  async remove(id: number) {
+    await db.query('DELETE FROM productos WHERE id = ?', [id]);
     return `This action removes a #${id} producto`;
   }
 }
