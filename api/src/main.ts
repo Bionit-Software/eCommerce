@@ -9,11 +9,13 @@ async function bootstrap() {
   app.enableCors({
     credentials: true,
     //colocar url valida del front del admin y del front del cliente
-    origin: [
-      'http://localhost:5173',
-      'https://admin.lacocina.com',
-      'https://lacocina.com',
-    ],
+    // origin: [
+    //   'http://localhost:5173',
+    //   'https://admin.lacocina.com',
+    //   'https://lacocina.com',
+    //   'https://api.lacocina.ar',
+    // ],
+    origin: '*',
   });
   //configuracion de archivos estaticos
   app.useGlobalPipes(new ValidationPipe()); // validacion de clases global

@@ -31,10 +31,27 @@ export class ProductosService {
     return productos;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} producto`;
+  async findFirstTwelve() {
+    const [productos] = await db.query(
+      'SELECT * FROM productos ORDER BY id DESC LIMIT 12',
+    );
+    return productos;
   }
 
+  async findOneById(id: number) {
+    const [producto] = await db.query('SELECT * FROM productos WHERE id = ?', [
+      id,
+    ]);
+    return producto;
+  }
+
+  async findLikeName(nombre: string) {
+    const [productos] = await db.query(
+      'SELECT * FROM productos WHERE nombre == ?',
+      [nombre],
+    );
+    return productos;
+  }
   // update(id: number, updateProductoDto: UpdateProductoDto) {
   //   return `This action updates a #${id} producto`;
   // }

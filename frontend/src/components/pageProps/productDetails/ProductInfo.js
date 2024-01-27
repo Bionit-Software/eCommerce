@@ -6,35 +6,33 @@ const ProductInfo = ({ productInfo }) => {
   const dispatch = useDispatch();
   return (
     <div className="flex flex-col gap-5">
-      <h2 className="text-4xl font-semibold">{productInfo.productName}</h2>
-      <p className="text-xl font-semibold">${productInfo.price}</p>
-      <p className="text-base text-gray-600">{productInfo.des}</p>
-      <p className="text-sm">Be the first to leave a review.</p>
-      <p className="font-medium text-lg">
-        <span className="font-normal">Colors:</span> {productInfo.color}
+      <h2 className="text-4xl font-semibold">{productInfo.nombre}</h2>
+      
+      <p className="text-xl font-semibold">${productInfo.precio}</p>
+      <p className="text-base text-gray-600">{productInfo.descripcion}</p>
+      <p className="font-normal text-sm">
+        <span className="text-base font-medium">Marca:</span> {productInfo.idMarca}
+        <span className="text-base font-medium"> Categoria:</span> {productInfo.idCategoria}
       </p>
       <button
         onClick={() =>
           dispatch(
             addToCart({
               _id: productInfo.id,
-              name: productInfo.productName,
+              name: productInfo.nombre,
               quantity: 1,
-              image: productInfo.img,
+              stock: productInfo.stock,
+              image: productInfo.url_image,
               badge: productInfo.badge,
-              price: productInfo.price,
+              price: productInfo.precio,
               colors: productInfo.color,
             })
           )
         }
         className="w-full py-4 bg-primeColor hover:bg-black duration-300 text-white text-lg font-titleFont"
       >
-        Add to Cart
+        Añadir al carrito
       </button>
-      <p className="font-normal text-sm">
-        <span className="text-base font-medium"> Categories:</span> Spring
-        collection, Streetwear, Women Tags: featured SKU: N/A
-      </p>
     </div>
   );
 };

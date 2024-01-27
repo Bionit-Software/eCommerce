@@ -45,9 +45,23 @@ export class ProductosController {
     }
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.productosService.findOne(+id);
+  @Get('search/:name')
+  findOne(@Param('name') name: string) {
+    const res = this.productosService.findLikeName(name);
+    return res;
+  }
+
+  @Get('first-twelve')
+  async findFirstTwelve() {
+    const res = await this.productosService.findFirstTwelve();
+    return res;
+  }
+
+  @Get('findOneById/:id')
+  async findOneByName(@Param('id') id: number) {
+    console.log(id);
+    const res = await this.productosService.findOneById(id);
+    return res;
   }
 
   // @Patch(':id')

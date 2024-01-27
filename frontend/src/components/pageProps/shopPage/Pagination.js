@@ -1,23 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import Product from "../../home/Products/Product";
-import { paginationItems } from "../../../constants";
-
-const items = paginationItems;
+import axios from "axios";
+import URL from "../../../constantes";
 function Items({ currentItems }) {
+  console.log(currentItems + "currentItems")
   return (
     <>
       {currentItems &&
         currentItems.map((item) => (
-          <div key={item._id} className="w-full">
+          <div key={item.ID} className="w-full">
             <Product
-              _id={item._id}
-              img={item.img}
-              productName={item.productName}
-              price={item.price}
+              id={item.ID}
+              url_image={item.url_image}
+              nombre={item.nombre}
+              precio={item.precio}
+              stock={item.stock}
+              descripcion={item.descripcion}
               color={item.color}
               badge={item.badge}
-              des={item.des}
             />
           </div>
         ))}
@@ -30,13 +31,23 @@ const Pagination = ({ itemsPerPage }) => {
   // following the API or data you're working with.
   const [itemOffset, setItemOffset] = useState(0);
   const [itemStart, setItemStart] = useState(1);
-
+  const [items, setItems] = useState([]);
   // Simulate fetching items from another resources.
   // (This could be items from props; or items loaded in a local state
   // from an API endpoint with useEffect and useState)
+  useEffect (() => {
+    const fetchItems = async () => {
+      const res = await axios.get(URL.API_URL + "productos/all");
+      console.log(res.data)
+      setItems(res.data);
+    };
+    fetchItems();
+  }
+  , []);
   const endOffset = itemOffset + itemsPerPage;
   //   console.log(`Loading items from ${itemOffset} to ${endOffset}`);
   const currentItems = items.slice(itemOffset, endOffset);
+  console.log(currentItems + "currentItems")
   const pageCount = Math.ceil(items.length / itemsPerPage);
 
   // Invoke when user click to request another page.
@@ -69,7 +80,7 @@ const Pagination = ({ itemsPerPage }) => {
         />
 
         <p className="text-base font-normal text-lightText">
-          Products from {itemStart === 0 ? 1 : itemStart} to {endOffset} of{" "}
+        Productos {itemStart === 0 ? 1 : itemStart} de {endOffset} a{" "}
           {items.length}
         </p>
       </div>

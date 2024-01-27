@@ -11,6 +11,8 @@ import { MarcasModule } from './marcas/marcas.module';
     ServeStaticModule.forRoot({
       // rootPath: join(__dirname, '../../'), por si le pinta no andar
       rootPath: join(__dirname, '../'),
+      //produccion
+      // rootPath: join(__dirname, './'), creo que es asi
       renderPath: '/uploads',
     }),
     ProductosModule,

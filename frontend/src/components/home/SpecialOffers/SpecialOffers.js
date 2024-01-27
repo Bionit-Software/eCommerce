@@ -11,9 +11,9 @@ import {
 const SpecialOffers = () => {
   return (
     <div className="w-full pb-20">
-      <Heading heading="Special Offers" />
+      <Heading heading="Ofertas" />
       <div className="w-full grid grid-cols-1 md:grid-cols-2 lgl:grid-cols-3 xl:grid-cols-4 gap-10">
-        <Product
+        {/* <Product
           _id="1101"
           img={spfOne}
           productName="Cap for Boys"
@@ -48,7 +48,7 @@ const SpecialOffers = () => {
           color="Black"
           badge={true}
           des="Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic excepturi quibusdam odio deleniti reprehenderit facilis."
-        />
+        /> */}
       </div>
     </div>
   );

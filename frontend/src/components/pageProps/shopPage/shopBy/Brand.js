@@ -7,24 +7,32 @@ const Brand = () => {
   const brands = [
     {
       _id: 9006,
-      title: "Apple",
+      title: "Instrumentos musicales",
     },
     {
       _id: 9007,
-      title: "Ultron",
+      title: "Artesanías Cerámica"
     },
     {
       _id: 9008,
-      title: "Unknown",
+      title: "Artesanías Lana"
     },
     {
       _id: 9009,
-      title: "Shoppers Home",
+      title: "Artesanías Madera"
     },
     {
       _id: 9010,
-      title: "Hoichoi",
+      title: "Artesanías Cuero"
     },
+    {
+      _id: 9011,
+      title: "Gastronomía Dulces"
+    },
+    {
+      _id: 9012,
+      title: "Gastronomía Vinos"
+    }
   ];
 
   return (
@@ -33,7 +41,7 @@ const Brand = () => {
         onClick={() => setShowBrands(!showBrands)}
         className="cursor-pointer"
       >
-        <NavTitle title="Shop by Brand" icons={true} />
+        <NavTitle title="Categorias" icons={true} />
       </div>
       {showBrands && (
         <motion.div

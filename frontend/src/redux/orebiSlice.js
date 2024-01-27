@@ -23,9 +23,9 @@ export const orebiSlice = createSlice({
       const item = state.products.find(
         (item) => item._id === action.payload._id
       );
-      if (item) {
-        item.quantity++;
-      }
+      item.quantity === item.stock
+        ? (item.quantity = item.stock)
+        : item.quantity++;
     },
     drecreaseQuantity: (state, action) => {
       const item = state.products.find(
