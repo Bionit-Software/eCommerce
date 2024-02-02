@@ -47,9 +47,10 @@ export class ProductosService {
 
   async findLikeName(nombre: string) {
     const [productos] = await db.query(
-      'SELECT * FROM productos WHERE nombre == ?',
-      [nombre],
+      'SELECT * FROM productos WHERE nombre LIKE ?',
+      [`%${nombre}%`],
     );
+    console.log(productos);
     return productos;
   }
   // update(id: number, updateProductoDto: UpdateProductoDto) {

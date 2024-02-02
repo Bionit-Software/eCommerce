@@ -6,6 +6,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { CategoriasModule } from './categorias/categorias.module';
 import { MarcasModule } from './marcas/marcas.module';
+import { MercadopagoModule } from './mercadopago/mercadopago.module';
 @Module({
   imports: [
     ServeStaticModule.forRoot({
@@ -18,6 +19,7 @@ import { MarcasModule } from './marcas/marcas.module';
     ProductosModule,
     CategoriasModule,
     MarcasModule,
+    MercadopagoModule,
   ],
   controllers: [ProductosController],
   providers: [ProductosService],

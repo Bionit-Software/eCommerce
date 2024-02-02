@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import Breadcrumbs from "../../components/pageProps/Breadcrumbs";
 import { resetCart } from "../../redux/orebiSlice";
@@ -8,6 +8,7 @@ import { emptyCart } from "../../assets/images/index";
 import ItemCard from "./ItemCard";
 
 const Cart = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const products = useSelector((state) => state.orebiReducer.products);
   const [totalAmt, setTotalAmt] = useState("");
@@ -29,6 +30,12 @@ const Cart = () => {
       setShippingCharge(20);
     }
   }, [totalAmt]);
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    navigate("/parcela-pago" , {state: {totalAmt: totalAmt, products: products}});
+  }
+
   return (
     <div className="max-w-container mx-auto px-4">
       <Breadcrumbs title="Cart" />
@@ -52,10 +59,10 @@ const Cart = () => {
             onClick={() => dispatch(resetCart())}
             className="py-2 px-10 bg-red-500 text-white font-semibold uppercase mb-4 hover:bg-red-700 duration-300"
           >
-            Reset cart
+            Vaciar carrito
           </button>
 
-          <div className="flex flex-col mdl:flex-row justify-between border py-4 px-4 items-center gap-2 mdl:gap-0">
+          {/* <div className="flex flex-col mdl:flex-row justify-between border py-4 px-4 items-center gap-2 mdl:gap-0">
             <div className="flex items-center gap-4">
               <input
                 className="w-44 mdl:w-52 h-8 px-4 border text-primeColor text-sm outline-none border-gray-400"
@@ -67,7 +74,7 @@ const Cart = () => {
               </p>
             </div>
             <p className="text-lg font-semibold">Update Cart</p>
-          </div>
+          </div> */}
           <div className="max-w-7xl gap-4 flex justify-end mt-4">
             <div className="w-96 flex flex-col gap-4">
               <h1 className="text-2xl font-semibold text-right">Total del carrito</h1>
@@ -92,11 +99,12 @@ const Cart = () => {
                 </p>
               </div>
               <div className="flex justify-end">
-                <Link to="/paymentgateway">
-                  <button className="w-52 h-10 bg-primeColor text-white hover:bg-black duration-300">
-                    Proceed to Checkout
-                  </button>
-                </Link>
+                <button 
+                onClick={(e)=> handleClick(e)}
+                className="w-52 h-10 bg-primeColor text-white hover:bg-black duration-300"
+                >
+                  Proceder al pago
+                </button>
               </div>
             </div>
           </div>
@@ -123,7 +131,7 @@ const Cart = () => {
               No tienes artículos en tu carrito. Haz clic en el botón de abajo
               para seguir comprando.
             </p>
-            <Link to="/shop">
+            <Link to="/tienda">
               <button className="bg-primeColor rounded-md cursor-pointer hover:bg-black active:bg-gray-900 px-8 py-2 font-titleFont font-semibold text-lg text-gray-200 hover:text-white duration-300">
                 Continuar comprando
               </button>
