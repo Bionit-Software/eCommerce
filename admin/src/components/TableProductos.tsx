@@ -1,133 +1,195 @@
 import axios from "axios";
 import constants from "../constants";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import Pagination from "./Pagination";
 
-const TableProductos = ({products}: {products: any}) => {
-    console.log(products);
-    const parsearFecha = (fecha: string) => {
-      const fechaParseada = new Date(fecha);
-      return fechaParseada.toLocaleDateString();
+const TableProductos = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState(""); // Estado para el término de búsqueda
+  const navigate = useNavigate();
+  console.log(currentPage, totalPages);
+  
+  const fetchProducts = async (page: number) => {
+    try {
+      const response = await axios.get(constants.API_URL + `productos/pages/${page}?searchTerm=${searchTerm}`); // Incluir el término de búsqueda en la URL
+      setProducts(response.data.productos);
+      setTotalPages(response.data.totalPages);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      // Handle the error or display a user-friendly message
     }
-    const handleDelete = (id: number) => {
-      console.log(id);
-      axios.delete(constants.API_URL + 'productos/' + id)
+  };
+
+  const fetchData = async () => {
+    try {
+      const numeroPaginas = await axios.get(constants.API_URL + 'productos/totalPages');
+      setTotalPages(numeroPaginas.data);
+      await fetchProducts(currentPage); // Llama a fetchProducts con la página actual
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      // Handle the error or display a user-friendly message
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+
+    // fetchData();
+    const timer = setTimeout(() => {
+      fetchData();
+    }, 500); // Espera 500 ms después de que searchTerm cambie antes de ejecutar fetchData
+
+    return () => clearTimeout(timer);
+  }, [currentPage, searchTerm]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  const parsearFecha = (fecha: string) => {
+    const fechaParseada = new Date(fecha);
+    return fechaParseada.toLocaleDateString();
+  }
+  const handleDelete = (id: number) => {
+    console.log(id);
+    axios.delete(constants.API_URL + 'productos/' + id)
       .then((response) => {
         console.log(response);
         window.location.reload();
       })
-    }
-    const navigate = useNavigate();
-    return (
-      <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-        <div className="max-w-full overflow-x-auto">
-          <table className="w-full table-auto">
-            <thead>
-              <tr className="bg-gray-2 text-left dark:bg-meta-4">
-                <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                  Producto
-                </th>
-                <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
-                  Precio
-                </th>
-                <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
-                  Stock
-                </th>
-                <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
-                  Categoria
-                </th>
-                <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
-                  Marca
-                </th>
-                <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
-                  Creado
-                </th>
-                <th className="py-4 px-4 font-medium text-black dark:text-white">
-                  Actions
-                </th>
+  }
+
+  const handleSearch = (event: any) => {
+    setSearchTerm(event.target.value); // Actualiza el término de búsqueda
+    setCurrentPage(1);
+  };
+
+  return (
+    // <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+    <>
+      <div className="max-h-115 md:max-h-125 lg:max-h-180 overflow-y-auto overflow-x-auto">
+        <table className="w-full table-auto">
+          <thead className="sticky top-0 bg-gray-2 dark:bg-meta-4">
+            <tr className="bg-gray-2 text-left dark:bg-meta-4">
+              <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
+                Producto
+                <input
+                  type="text"
+                  placeholder="Buscar"
+                  className="w-1/2 rounded-md border border-stroke dark:border-strokedark ml-4 p-1"
+                  value={searchTerm} // Vincula el valor del campo de búsqueda al estado searchTerm
+                  onChange={handleSearch} // Maneja los cambios en el campo de búsqueda
+                />
+              </th>
+              <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white text-center">
+                Precio
+              </th>
+              <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white text-center">
+                Stock
+              </th>
+              <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white text-center">
+                Categoria
+              </th>
+              <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white text-center">
+                Marca
+              </th>
+              <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white text-center">
+                Creado
+              </th>
+              <th className="py-4 px-4 font-medium text-black dark:text-white text-center">
+                Acciones
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {products === undefined && (
+              <tr className="border-b border-[#eee] dark:border-strokedark">
+                <td className="py-5 px-4 pl-9 xl:pl-11">
+                  <div className="flex items-center">
+                    <div className="w-10 h-10 flex-shrink-0 mr-3">
+                      <img
+                        className="rounded-full"
+                        src="https://images.unsplash.com/photo-1611095770685-5a4d1e0a5f9e?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YmVhdXR5JTIwc2hvcHBpbmd8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80"
+                        alt=""
+                      />
+                    </div>
+                    <div>
+                      <h5 className="font-medium text-black dark:text-white">
+                        Sin productos
+                      </h5>
+                      <p className="text-sm">Tenés que agregar productos</p>
+                    </div>
+                  </div>
+                </td>
+                <td className="py-5 px-4">
+                  <p className="text-black dark:text-white">$0.00</p>
+                </td>
+                <td className="py-5 px-4">
+                  <p className="text-black dark:text-white">Fecha</p>
+                </td>
+                <td className="py-5 px-4">
+                  <p className="text-black dark:text-white">
+                    <span className="inline-flex rounded-full bg-success bg-opacity-10 py-1 px-3 text-sm font-medium text-success">
+                      Paid
+                    </span>
+                  </p>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {products === undefined && (
-                <tr className="border-b border-[#eee] dark:border-strokedark">
-                  <td className="py-5 px-4 pl-9 xl:pl-11">
-                    <div className="flex items-center">
-                      <div className="w-10 h-10 flex-shrink-0 mr-3">
-                        <img
-                          className="rounded-full"
-                          src="https://images.unsplash.com/photo-1611095770685-5a4d1e0a5f9e?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YmVhdXR5JTIwc2hvcHBpbmd8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80"
-                          alt=""
-                        />
-                      </div>
-                      <div>
-                        <h5 className="font-medium text-black dark:text-white">
-                          Sin productos
-                        </h5>
-                        <p className="text-sm">Tenés que agregar productos</p>
-                      </div>
+            )
+            }
+            {products !== undefined && products.map((product: any) => (
+              <tr key={product.id} className="border-b border-[#eee] dark:border-strokedark">
+                <td className="py-5 px-4 pl-9 xl:pl-11">
+                  <div className="flex items-center">
+                    <div className="w-16 h-16 mr-3 ">
+                      <img
+                        src={product.url_image}
+                        alt=""
+                        className='w-full h-full object-cover'
+                      />
                     </div>
-                  </td>
-                  <td className="py-5 px-4">
-                    <p className="text-black dark:text-white">$0.00</p>
-                  </td>
-                  <td className="py-5 px-4">
-                    <p className="text-black dark:text-white">Fecha</p>
-                  </td>
-                  <td className="py-5 px-4">
-                    <p className="text-black dark:text-white">
-                      <span className="inline-flex rounded-full bg-success bg-opacity-10 py-1 px-3 text-sm font-medium text-success">
-                        Paid
-                      </span>
-                    </p>
-                  </td>
-                </tr>
-                )
-              }
-              {products !== undefined && products.map((product: any) => (
-                <tr key={product.id} className="border-b border-[#eee] dark:border-strokedark">
-                  <td className="py-5 px-4 pl-9 xl:pl-11">
-                    <div className="flex items-center">
-                      <div className="w-16 h-16 mr-3 ">
-                        <img
-                          src={product.url_image}
-                          alt=""
-                          className='w-full h-full object-cover'
-                        />
-                      </div>
-                      <div>
-                        <h5 className="font-medium text-black dark:text-white">
-                          {product.nombre}
-                        </h5>
-                        <p className="text-sm">{product.descripcion}</p>
-                      </div>
+                    <div>
+                      <h5 className="font-medium text-black dark:text-white truncate w-50">
+                        {product.nombre}
+                      </h5>
+                      <p className="text-sm truncate w-50">
+                        {product.descripcion}
+                      </p>
                     </div>
-                  </td>
-                  <td className="py-5 px-4">
-                    <p className="text-black dark:text-white">
-                      {product.precio}
-                    </p>
-                  </td>
-                  <td className="py-5 px-4">
-                    <p className="text-black dark:text-white">
-                      {product.stock}
-                    </p>
-                  </td>
-                  <td className="py-5 px-4">
-                    <p className="text-black dark:text-white">
-                      {product.idCategoria}
-                    </p>
-                  </td>
-                  <td className="py-5 px-4">
-                    <p className="text-black dark:text-white">
-                      {product.idMarca}
-                    </p>
-                  </td>
-                  <td className="py-5 px-4">
-                    <p className="text-black dark:text-white">
-                      {parsearFecha(product.createdAt)}
-                    </p>
-                  </td>
-                  <td className="py-5 px-4">
-                    <div className="flex items-center space-x-3.5">
+                  </div>
+                </td>
+                <td className="py-5 px-4">
+                  <p className="text-black dark:text-white text-center">
+                    {product.precio}
+                  </p>
+                </td>
+                <td className="py-5 px-4">
+                  <p className="text-black dark:text-white text-center">
+                    {product.stock}
+                  </p>
+                </td>
+                <td className="py-5 px-4">
+                  <p className="text-black dark:text-white text-center">
+                    {product.idCategoria}
+                  </p>
+                </td>
+                <td className="py-5 px-4">
+                  <p className="text-black dark:text-white text-center">
+                    {product.idMarca}
+                  </p>
+                </td>
+                <td className="py-5 px-4">
+                  <p className="text-black dark:text-white text-center">
+                    {parsearFecha(product.createdAt)}
+                  </p>
+                </td>
+                <td className="py-5 px-4">
+                  <div className="flex items-center space-x-3.5 justify-center">
                     <button className="hover:text-primary">
                       <svg
                         className="fill-current"
@@ -147,9 +209,9 @@ const TableProductos = ({products}: {products: any}) => {
                         />
                       </svg>
                     </button>
-                    <button 
-                    onClick={() => handleDelete(product.ID)}
-                    className="hover:text-primary">
+                    <button
+                      onClick={() => handleDelete(product.ID)}
+                      className="hover:text-primary">
                       <svg
                         className="fill-current"
                         width="18"
@@ -176,9 +238,9 @@ const TableProductos = ({products}: {products: any}) => {
                         />
                       </svg>
                     </button>
-                    <button 
-                    onClick={() => navigate('/tablas/productos/edit', {state: {product}})}
-                    className="hover:text-primary"
+                    <button
+                      onClick={() => navigate('/tablas/productos/edit', { state: { product } })}
+                      className="hover:text-primary"
                     >
                       <svg
                         className="fill-current"
@@ -201,13 +263,17 @@ const TableProductos = ({products}: {products: any}) => {
                   </div>
                 </td>
               </tr>
-              ))}    
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
       </div>
-    );
-  };
-  
-  export default TableProductos;
-  
+      <Pagination
+        totalPages={totalPages}
+        currentPage={currentPage}
+        changePage={setCurrentPage}
+      />
+    </>
+  );
+};
+
+export default TableProductos;

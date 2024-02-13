@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, redirect, useLocation } from "react-router-dom";
 import Breadcrumbs from "../../components/pageProps/Breadcrumbs";
 import axios from "axios";
 import URL from "../../constantes";
 // import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 const StepOne = ({ products }) => {
-  const [preferenceId, setPreferenceId] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     nombreApellido: "",
     email: "",
@@ -23,7 +23,6 @@ const StepOne = ({ products }) => {
       [e.target.id]: e.target.value,
 
     });
-    console.log(formData)
   }
 
   const handleSubmit = async (formData, products) => {
@@ -31,17 +30,26 @@ const StepOne = ({ products }) => {
       formData,
       products
     }
-    const res = await axios.post(URL.API_URL + "mercadopago/create", data,
-    {
-      timeout: 60000 // Establece el tiempo de espera en milisegundos (15 segundos en este ejemplo)
+    if (formData.nombreApellido === "" || formData.email === "" || formData.telefono === "" || formData.provincia === "" || formData.ciudad === "" || formData.direccion === "" || formData.codigoPostal === "") {
+      alert("Por favor complete todos los campos")
+      return
+    } else {
+      setLoading(true);
+      const res = await axios.post(URL.API_URL + "mercadopago/create", data,
+        {
+          timeout: 60000 // Establece el tiempo de espera en milisegundos (15 segundos en este ejemplo)
+        }
+      )
+      if (res.status === 201) {
+        setLoading(false);
+        window.location.href = res.data
+      }
     }
-    )
-    setPreferenceId(res.data.id)
-    console.log(res)
   }
 
   return (
     <div className="flex flex-col gap-4 w-full">
+      {loading && <div className="w-full h-full bg-black bg-opacity-50 fixed top-0 left-0 z-50 flex items-center justify-center"> <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div></div>}
       <h1 className="text-2xl font-semibold">Datos de Envío</h1>
       <div className="flex flex-col gap-2">
         <label htmlFor="nombreApellido">Nombre y Apellido</label>
@@ -153,7 +161,7 @@ const Detalles = ({ products, totalAmt }) => {
             />
             <div className="flex flex-col gap">
               <p>{product.name}</p>
-              <p>${product.price * product.quantity}</p>
+              <p>${Number(product.price * product.quantity).toFixed(2)}</p>
               <p>Cantidad: {product.quantity}</p>
             </div>
           </div>
@@ -172,7 +180,6 @@ const Payment = () => {
   const location = useLocation();
   const [products] = useState(location.state?.products);
   const [totalAmt] = useState(location.state?.totalAmt);
-  console.log(products)
 
   return (
     <div className="max-w-container mx-auto px-4">

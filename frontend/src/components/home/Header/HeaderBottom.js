@@ -77,15 +77,15 @@ const HeaderBottom = () => {
   // }, [searchQuery]);
 
   return (
-    <div className="w-full bg-[#F5F5F3] relative">
+    <div className="w-full bg-[#F5F5F3] relative ">
       <div className="max-w-container mx-auto">
         <Flex className="flex flex-col lg:flex-row items-start lg:items-center justify-between w-full px-4 pb-4 lg:pb-0 h-full lg:h-24">
-          <div
+          {/* <div
             onClick={() => setShow(!show)}
             ref={ref}
             className="flex h-14 cursor-pointer items-center gap-2 text-primeColor"
           >
-            {/* <HiOutlineMenuAlt4 className="w-5 h-5" />
+            <HiOutlineMenuAlt4 className="w-5 h-5" />
             <p className="text-[14px] font-normal">Shop by Category</p>
 
             {show && (
@@ -114,8 +114,9 @@ const HeaderBottom = () => {
                   Home appliances
                 </li>
               </motion.ul>
-            )} */}
-          </div>
+            )}
+          </div> */}
+          <div></div>
           <div className="relative w-full lg:w-[600px] h-[50px] text-base text-primeColor bg-white flex items-center gap-2 justify-between px-6 rounded-xl">
             <input
               className="flex-1 h-full outline-none placeholder:text-[#C4C4C4] placeholder:text-[14px]"
@@ -132,7 +133,7 @@ const HeaderBottom = () => {
                 {resultados.map((item) => (
                   <div
                     onClick={() => {
-                      navigate(`/producto/${item.nombre}`, { state: { item } });
+                      navigate(`/producto/${encodeURIComponent(item.nombre)}?id=${item.ID}`, { state: { item } });
                       setResultados([]);
                     }}
                     className="w-full h-20 flex items-center gap-2 px-6 hover:bg-[#F5F5F3] hover:cursor-pointer"
@@ -155,7 +156,8 @@ const HeaderBottom = () => {
               </div>
             )}
           </div>
-          <div className="flex gap-4 mt-2 lg:mt-0 items-center pr-6 cursor-pointer relative">
+          <div></div>
+          {/* <div className="flex gap-4 mt-2 lg:mt-0 items-center pr-6 cursor-pointer relative">
             <div onClick={() => setShowUser(!showUser)} className="flex">
               <FaUser />
               <FaCaretDown />
@@ -180,9 +182,6 @@ const HeaderBottom = () => {
                 <li className="text-gray-400 px-4 py-1 border-b-[1px] border-b-gray-400 hover:border-b-white hover:text-white duration-300 cursor-pointer">
                   Perfil
                 </li>
-                {/* <li className="text-gray-400 px-4 py-1 border-b-[1px] border-b-gray-400  hover:border-b-white hover:text-white duration-300 cursor-pointer">
-                  Others
-                </li> */}
               </motion.ul>
             )}
             <Link to="/carrito">
@@ -193,7 +192,7 @@ const HeaderBottom = () => {
                 </span>
               </div>
             </Link>
-          </div>
+          </div> */}
         </Flex>
       </div>
     </div>

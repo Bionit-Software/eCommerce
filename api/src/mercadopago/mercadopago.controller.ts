@@ -1,15 +1,5 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  Request,
-} from '@nestjs/common';
+import { Controller, Get, Post, Param, Delete, Request } from '@nestjs/common';
 import { MercadopagoService } from './mercadopago.service';
-import { UpdateMercadopagoDto } from './dto/update-mercadopago.dto';
 
 @Controller('mercadopago')
 export class MercadopagoController {
@@ -20,6 +10,15 @@ export class MercadopagoController {
     console.log(req.body);
     const res = this.mercadopagoService.create(req.body);
     console.log(res);
+    return res;
+  }
+
+  @Post('webhook')
+  async webhook(@Request() req: any): Promise<any> {
+    console.log(req.body);
+    const res = this.mercadopagoService.webhook(req.body);
+    console.log(res);
+    return res;
   }
 
   @Get()
@@ -27,18 +26,18 @@ export class MercadopagoController {
     return this.mercadopagoService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.mercadopagoService.findOne(+id);
+  @Get('facturas')
+  async facturas() {
+    return this.mercadopagoService.facturas();
   }
 
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateMercadopagoDto: UpdateMercadopagoDto,
-  ) {
-    return this.mercadopagoService.update(+id, updateMercadopagoDto);
-  }
+  // @Patch(':id')
+  // update(
+  //   @Param('id') id: string,
+  //   @Body() updateMercadopagoDto: UpdateMercadopagoDto,
+  // ) {
+  //   return this.mercadopagoService.update(+id, updateMercadopagoDto);
+  // }
 
   @Delete(':id')
   remove(@Param('id') id: string) {

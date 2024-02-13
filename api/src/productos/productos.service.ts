@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { ResultSetHeader } from 'mysql2';
 // import { CreateProductoDto } from './dto/create-producto.dto';
 // import { UpdateProductoDto } from './dto/update-producto.dto';
 import db from 'src/db';
@@ -13,7 +14,8 @@ export class ProductosService {
         [
           nombre,
           descripcion,
-          process.env.API_URL + 'uploads/' + filename.filename,
+          // process.env.API_URL +
+          'https://api.tenedores.ar/uploads/' + filename.filename,
           precio,
           stock,
           idCategoria,
@@ -27,7 +29,10 @@ export class ProductosService {
   }
 
   async findAll() {
-    const [productos] = await db.query('SELECT * FROM productos');
+    const [productos] = await db.query(
+      'SELECT * FROM productos ORDER BY createdAt DESC',
+    );
+    console.log(productos);
     return productos;
   }
 
@@ -60,5 +65,38 @@ export class ProductosService {
   async remove(id: number) {
     await db.query('DELETE FROM productos WHERE id = ?', [id]);
     return `This action removes a #${id} producto`;
+  }
+
+  async totalPages() {
+    const itemsPerPage = 12; // total de productos por pages
+    const [result] = await db.query<ResultSetHeader>(
+      'SELECT COUNT(*) as total FROM productos',
+    );
+    const totalPages = Math.ceil(result[0].total / itemsPerPage);
+    return totalPages;
+  }
+
+  // async pages(page: number, searchTerm: string) {
+  //   const itemsPerPage = 12; // total de productos por pages
+  //   const offset = (page - 1) * itemsPerPage;
+  //   const [productos] = await db.query(
+  //     'SELECT * FROM productos ORDER BY createdAt DESC LIMIT ?, ?',
+  //     [offset, itemsPerPage],
+  //   );
+  //   return productos;
+  // }
+  async pages(page: number, searchTerm: string) {
+    const itemsPerPage = 12; // total de productos por página
+    const offset = (page - 1) * itemsPerPage;
+    const [productos] = await db.query(
+      'SELECT * FROM productos WHERE nombre LIKE ? ORDER BY createdAt DESC LIMIT ?, ?',
+      [`%${searchTerm}%`, offset, itemsPerPage],
+    );
+    const [totalMatch] = await db.query(
+      'SELECT COUNT(*) as total FROM productos WHERE nombre LIKE ?',
+      [`%${searchTerm}%`],
+    );
+    const totalPages = Math.ceil(totalMatch[0].total / itemsPerPage);
+    return { productos, totalPages };
   }
 }

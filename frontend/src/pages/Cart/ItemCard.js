@@ -39,7 +39,7 @@ const ItemCard = ({ item }) => {
           </span>
         </div>
         <div className="w-1/3 flex items-center font-titleFont font-bold text-lg">
-          <p>${item.quantity * item.price}</p>
+          <p>${Number(item.quantity * item.price).toFixed(2)}</p>
         </div>
       </div>
     </div>

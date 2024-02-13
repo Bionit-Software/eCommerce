@@ -15,18 +15,18 @@ const Cart = () => {
   const [shippingCharge, setShippingCharge] = useState("");
   useEffect(() => {
     let price = 0;
-    products.map((item) => {
+    products.forEach((item) => {
       price += item.price * item.quantity;
-      return price;
     });
-    setTotalAmt(price);
+    setTotalAmt(Number(price.toFixed(2)));
   }, [products]);
+  
   useEffect(() => {
     if (totalAmt <= 200) {
       setShippingCharge(30);
     } else if (totalAmt <= 400) {
       setShippingCharge(25);
-    } else if (totalAmt > 401) {
+    } else {
       setShippingCharge(20);
     }
   }, [totalAmt]);
@@ -38,13 +38,13 @@ const Cart = () => {
 
   return (
     <div className="max-w-container mx-auto px-4">
-      <Breadcrumbs title="Cart" />
+      <Breadcrumbs title="Carrito" />
       {products.length > 0 ? (
         <div className="pb-20">
           <div className="w-full h-20 bg-[#F5F7F7] text-primeColor hidden lgl:grid grid-cols-5 place-content-center px-6 text-lg font-titleFont font-semibold">
-            <h2 className="col-span-2">Product</h2>
-            <h2>Price</h2>
-            <h2>Quantity</h2>
+            <h2 className="col-span-2">Producto</h2>
+            <h2>Precio</h2>
+            <h2>Cantidad</h2>
             <h2>Sub Total</h2>
           </div>
           <div className="mt-5">
@@ -94,7 +94,7 @@ const Cart = () => {
                 <p className="flex items-center justify-between border-[1px] border-gray-400 py-1.5 text-lg px-4 font-medium">
                   Total
                   <span className="font-bold tracking-wide text-lg font-titleFont">
-                    ${totalAmt + shippingCharge}
+                    ${Number(totalAmt) + shippingCharge}
                   </span>
                 </p>
               </div>

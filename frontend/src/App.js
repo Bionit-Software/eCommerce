@@ -22,6 +22,8 @@ import Offer from "./pages/Offer/Offer";
 import Payment from "./pages/payment/Payment";
 import ProductDetails from "./pages/ProductDetails/ProductDetails";
 import Shop from "./pages/Shop/Shop";
+import { FloatingWhatsApp } from "react-floating-whatsapp";
+import { logoLight } from "./assets/images";
 
 const Layout = () => {
   return (
@@ -33,6 +35,18 @@ const Layout = () => {
       <Outlet />
       <Footer />
       <FooterBottom />
+      <FloatingWhatsApp
+        phoneNumber="542994559600"
+        accountName="TiendaDeAutor"
+        avatar={logoLight}
+        chatMessage="Hola, ¿en qué podemos ayudarte?"
+        statusMessage="En línea"
+        allowClickAway
+        showPopup
+        size="60px"
+        backgroundColor="#25d366"
+        position={{ bottom: '20px', right: '20px' }}
+      />
     </div>
   );
 };

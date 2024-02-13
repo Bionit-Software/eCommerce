@@ -1,11 +1,13 @@
 {
   "files": {
-    "main.css": "/static/css/main.362e4d32.css",
-    "main.js": "/static/js/main.2a05aa95.js",
+    "main.css": "/static/css/main.738bf529.css",
+    "main.js": "/static/js/main.7b00931d.js",
     "static/media/bannerImgTwo.webp": "/static/media/bannerImgTwo.d93152138c5c9da3de58.webp",
     "static/media/bannerImgThree.webp": "/static/media/bannerImgThree.cdd63ff84acf53a73a0d.webp",
+    "static/media/LogoFondo.jpg": "/static/media/LogoFondo.72f07a707d42d317b65b.jpg",
     "static/media/saleImgTwo.webp": "/static/media/saleImgTwo.ecb733524e878406c281.webp",
     "static/media/bannerImgOne.webp": "/static/media/bannerImgOne.cc70f00d1512cb1f97f6.webp",
+    "static/media/LogoTransparente.png": "/static/media/LogoTransparente.219a645830c0f61bb519.png",
     "static/media/newArrThree.webp": "/static/media/newArrThree.137dcefaee781098fd8a.webp",
     "static/media/payment.png": "/static/media/payment.3e00cc601c9e7fc1e7d3.png",
     "static/media/productOfTheYear.webp": "/static/media/productOfTheYear.2c30f10b51873bab4630.webp",
@@ -24,11 +26,11 @@
     "static/media/newArrTwo.webp": "/static/media/newArrTwo.bdc7d9372116bdf40cc4.webp",
     "static/media/newArrOne.webp": "/static/media/newArrOne.5982a995e5c312914fe6.webp",
     "index.html": "/index.html",
-    "main.362e4d32.css.map": "/static/css/main.362e4d32.css.map",
-    "main.2a05aa95.js.map": "/static/js/main.2a05aa95.js.map"
+    "main.738bf529.css.map": "/static/css/main.738bf529.css.map",
+    "main.7b00931d.js.map": "/static/js/main.7b00931d.js.map"
   },
   "entrypoints": [
-    "static/css/main.362e4d32.css",
-    "static/js/main.2a05aa95.js"
+    "static/css/main.738bf529.css",
+    "static/js/main.7b00931d.js"
   ]
 }

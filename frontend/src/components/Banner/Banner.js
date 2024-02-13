@@ -37,19 +37,19 @@ const Banner = () => {
         style={
           i === dotActive
             ? {
-                width: "30px",
-                color: "#262626",
-                borderRight: "3px #262626 solid",
-                padding: "8px 0",
-                cursor: "pointer",
-              }
+              width: "30px",
+              color: "#262626",
+              borderRight: "3px #262626 solid",
+              padding: "8px 0",
+              cursor: "pointer",
+            }
             : {
-                width: "30px",
-                color: "transparent",
-                borderRight: "3px white solid",
-                padding: "8px 0",
-                cursor: "pointer",
-              }
+              width: "30px",
+              color: "transparent",
+              borderRight: "3px white solid",
+              padding: "8px 0",
+              cursor: "pointer",
+            }
         }
       >
         0{i + 1}
@@ -77,19 +77,19 @@ const Banner = () => {
               style={
                 i === dotActive
                   ? {
-                      width: "25px",
-                      color: "#262626",
-                      borderRight: "3px #262626 solid",
-                      cursor: "pointer",
-                      fontSize: "12px",
-                    }
+                    width: "25px",
+                    color: "#262626",
+                    borderRight: "3px #262626 solid",
+                    cursor: "pointer",
+                    fontSize: "12px",
+                  }
                   : {
-                      width: "25px",
-                      color: "transparent",
-                      borderRight: "3px white solid",
-                      cursor: "pointer",
-                      fontSize: "12px",
-                    }
+                    width: "25px",
+                    color: "transparent",
+                    borderRight: "3px white solid",
+                    cursor: "pointer",
+                    fontSize: "12px",
+                  }
               }
             >
               0{i + 1}
@@ -102,19 +102,22 @@ const Banner = () => {
   return (
     <div className="w-full bg-white">
       <Slider {...settings}>
-        <Link to="/offer">
-          <div>
-            <Image imgSrc={bannerImgOne} />
+        <Link to="/tienda">
+          <div className="w-full h-[350px] justify-center text-center">
+            {/* <Image imgSrc={bannerImgOne} /> */}
+            slider 1
           </div>
         </Link>
-        <Link to="/offer">
-          <div>
-            <Image imgSrc={bannerImgTwo} />
+        <Link to="/tienda">
+          <div className="w-full h-[350px] justify-center text-center">
+            slider 2
+            {/* <Image imgSrc={bannerImgTwo} /> */}
           </div>
         </Link>
-        <Link to="/offer">
-          <div>
-            <Image imgSrc={bannerImgThree} />
+        <Link to="/tienda">
+          <div className="w-full h-[350px] justify-center text-center">
+            slider 3
+            {/* <Image imgSrc={bannerImgThree} /> */}
           </div>
         </Link>
       </Slider>

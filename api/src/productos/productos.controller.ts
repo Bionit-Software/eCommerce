@@ -8,6 +8,7 @@ import {
   Delete,
   Request,
   UseInterceptors,
+  Query,
 } from '@nestjs/common';
 import { ProductosService } from './productos.service';
 // import { UpdateProductoDto } from './dto/update-producto.dto';
@@ -75,5 +76,24 @@ export class ProductosController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.productosService.remove(+id);
+  }
+
+  @Get('totalPages')
+  async totalPages() {
+    const res = await this.productosService.totalPages();
+    return res;
+  }
+
+  @Get('pages/:page')
+  async page(
+    @Param('page') page: number,
+    @Query('searchTerm') searchTerm: string,
+  ) {
+    console.log(searchTerm);
+    const { productos, totalPages } = await this.productosService.pages(
+      page,
+      searchTerm,
+    );
+    return { productos, totalPages };
   }
 }

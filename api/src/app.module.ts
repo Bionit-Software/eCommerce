@@ -11,10 +11,10 @@ import { MercadopagoModule } from './mercadopago/mercadopago.module';
   imports: [
     ServeStaticModule.forRoot({
       // rootPath: join(__dirname, '../../'), por si le pinta no andar
-      rootPath: join(__dirname, '../'),
-      //produccion
-      // rootPath: join(__dirname, './'), creo que es asi
-      renderPath: '/uploads',
+      rootPath: join(__dirname, '../'), //produccion
+      serveStaticOptions: {
+        index: false,
+      },
     }),
     ProductosModule,
     CategoriasModule,

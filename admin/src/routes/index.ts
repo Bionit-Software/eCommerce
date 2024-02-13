@@ -12,7 +12,7 @@ const ProductoAdd = lazy(() => import('../pages/ProductoAdd'));
 const Alerts = lazy(() => import('../pages/UiElements/Alerts'));
 const Buttons = lazy(() => import('../pages/UiElements/Buttons'));
 const Paginas = lazy(() => import('../pages/Paginas'));
-
+const Facturas = lazy(() => import('../pages/Facturas'));
 const coreRoutes = [
   {
     path: '/calendar',
@@ -73,6 +73,11 @@ const coreRoutes = [
     path: '/paginas',
     title: 'Paginas',
     component: Paginas,
+  },
+  {
+    path: '/facturas',
+    title: 'Facturas',
+    component: Facturas,
   },
 ];
 

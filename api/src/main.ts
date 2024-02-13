@@ -2,9 +2,10 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { NestExpressApplication } from '@nestjs/platform-express';
 async function bootstrap() {
   //cors
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   //CORS CONFIGURACION
   app.enableCors({
     credentials: true,
@@ -16,6 +17,9 @@ async function bootstrap() {
     //   'https://api.lacocina.ar',
     // ],
     origin: '*',
+  });
+  app.useStaticAssets('uploads', {
+    prefix: '/uploads',
   });
   //configuracion de archivos estaticos
   app.useGlobalPipes(new ValidationPipe()); // validacion de clases global
