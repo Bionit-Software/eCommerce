@@ -9,10 +9,10 @@ function Items({ currentItems }) {
     <>
       {currentItems &&
         currentItems.map((item) => (
-          <div key={item.ID} className="w-full">
+          <div key={item.id} className="w-full">
             <Product
-              id={item.ID}
-              url_image={item.url_image}
+              id={item.id}
+              url_image={item.imagenes?.split(',')[0]}
               nombre={item.nombre}
               precio={item.precio}
               stock={item.stock}

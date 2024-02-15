@@ -25,6 +25,15 @@ function App() {
         position="top-right"
         reverseOrder={false}
         containerClassName="overflow-auto"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            padding: '16px',
+            color: '#fff',
+            background: '#333',
+            fontSize: '1.25rem',
+          },
+        }}
       />
       <Routes>
         <Route path="/auth/signin" element={<SignIn />} />

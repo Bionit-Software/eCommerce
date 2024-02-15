@@ -30,9 +30,9 @@ const Home = () => {
       <div className="max-w-container mx-auto px-4">
         {/* <Sale /> */}
         <NewArrivals productos={productos}/>
-        <BestSellers />
+        {/* <BestSellers /> */}
         {/* <YearProduct /> */}
-        <SpecialOffers />
+        {/* <SpecialOffers /> */}
       </div>
     </div>
   );

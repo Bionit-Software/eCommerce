@@ -43,7 +43,7 @@ const ProductInfo = ({ productInfo }) => {
                   name: productInfo.nombre,
                   quantity: 1,
                   stock: productInfo.stock,
-                  image: productInfo.url_image,
+                  image: productInfo.url_image || productInfo.imagenes?.split(',')[0],
                   badge: productInfo.badge,
                   price: productInfo.precio,
                   colors: productInfo.color,

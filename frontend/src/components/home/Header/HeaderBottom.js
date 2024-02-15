@@ -133,14 +133,14 @@ const HeaderBottom = () => {
                 {resultados.map((item) => (
                   <div
                     onClick={() => {
-                      navigate(`/producto/${encodeURIComponent(item.nombre)}?id=${item.ID}`, { state: { item } });
+                      navigate(`/producto/${encodeURIComponent(item.nombre)}?id=${item.id}`, { state: { item } });
                       setResultados([]);
                     }}
                     className="w-full h-20 flex items-center gap-2 px-6 hover:bg-[#F5F5F3] hover:cursor-pointer"
                   >
                     <img
                       className="w-12 h-12 object-cover"
-                      src={item.url_image}
+                      src={item.imagenes.split(',')[0]}
                       alt="product"
                     />
                     <div className="flex flex-col">

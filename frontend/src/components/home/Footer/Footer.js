@@ -38,7 +38,7 @@ const Footer = () => {
             </p>
             <ul className="flex items-center gap-2">
               <a
-                href="https://www.youtube.com/@reactjsBD"
+                href="https://www.youtube.com/"
                 target="_blank"
                 rel="noreferrer"
               >
@@ -56,7 +56,7 @@ const Footer = () => {
                 </li>
               </a> */}
               <a
-                href="https://www.facebook.com/Noorlalu143/"
+                href="https://www.facebook.com/"
                 target="_blank"
                 rel="noreferrer"
               >

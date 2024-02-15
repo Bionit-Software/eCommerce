@@ -9,11 +9,12 @@ import {
   Request,
   UseInterceptors,
   Query,
+  Put,
 } from '@nestjs/common';
 import { ProductosService } from './productos.service';
 // import { UpdateProductoDto } from './dto/update-producto.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 @ApiTags('productos')
 @Controller('productos')
@@ -22,19 +23,23 @@ export class ProductosController {
 
   @Post('add')
   @UseInterceptors(
-    FileInterceptor('file', {
+    FilesInterceptor('files', 5, {
       storage: diskStorage({
         destination: './uploads',
         filename: (req, file, cb) => {
-          cb(null, `${Date.now()}-${file.originalname}`);
+          const originalNameWithoutSpacesAndCommas = file.originalname.replace(
+            /\s|,/g,
+            '_',
+          );
+
+          cb(null, `${Date.now()}-${originalNameWithoutSpacesAndCommas}`);
         },
       }),
     }),
   )
   async create(@Request() req): Promise<any> {
-    const filename = req.file;
-    console.log(filename);
-    return this.productosService.create(req.body, filename);
+    console.log(req.files);
+    return this.productosService.create(req.body, req.files);
   }
 
   @Get('all')
@@ -65,13 +70,25 @@ export class ProductosController {
     return res;
   }
 
-  // @Patch(':id')
-  // update(
-  //   @Param('id') id: string,
-  //   @Body() updateProductoDto: UpdateProductoDto,
-  // ) {
-  //   return this.productosService.update(+id, updateProductoDto);
-  // }
+  @Put('edit/:id')
+  @UseInterceptors(
+    FilesInterceptor('files', 5, {
+      storage: diskStorage({
+        destination: './uploads',
+        filename: (req, file, cb) => {
+          const originalNameWithoutSpacesAndCommas = file.originalname.replace(
+            /\s|,/g,
+            '_',
+          );
+
+          cb(null, `${Date.now()}-${originalNameWithoutSpacesAndCommas}`);
+        },
+      }),
+    }),
+  )
+  async update(@Param('id') id: number, @Request() req): Promise<any> {
+    return this.productosService.update(id, req.body, req.files);
+  }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
@@ -88,11 +105,15 @@ export class ProductosController {
   async page(
     @Param('page') page: number,
     @Query('searchTerm') searchTerm: string,
+    @Query('stockOrder') stockOrder: string,
+    @Query('createdOrder') createdOrder: string,
   ) {
     console.log(searchTerm);
     const { productos, totalPages } = await this.productosService.pages(
       page,
       searchTerm,
+      stockOrder,
+      createdOrder,
     );
     return { productos, totalPages };
   }

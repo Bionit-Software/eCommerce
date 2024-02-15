@@ -9,7 +9,6 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "../../../redux/orebiSlice";
 
 const Product = (props) => {
-  // console.log(props)
   const navigate = useNavigate();
   const productItem = props;
   const handleProductDetails = () => {

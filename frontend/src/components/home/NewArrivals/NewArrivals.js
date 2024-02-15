@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useState } from "react";
 import Slider from "react-slick";
 import Heading from "../Products/Heading";
 import Product from "../Products/Product";
@@ -48,7 +48,7 @@ const NewArrivals = ({ productos }) => {
   };
   return (
     <div className="w-full pb-16">
-      <Heading heading="Destacados" />
+      <Heading heading="Productos Destacados" />
       <Slider {...settings}>
         {/* <div className="px-2">
           <Product
@@ -63,11 +63,11 @@ const NewArrivals = ({ productos }) => {
         </div> */}
         {!productos ? <div>Cargando...</div> :
           productos.map((producto) => (
-            <div className="px-2" key={producto.ID}>
+            <div className="px-2" key={producto.id}>
               <Suspense fallback={<div>Cargando...</div>}>
                 <Product
-                  id={producto.ID}
-                  url_image={producto.url_image}
+                  id={producto.id}
+                  url_image={producto?.imagenes?.split(',')[0]}
                   nombre={producto.nombre}
                   precio={producto.precio}
                   // color="Black"

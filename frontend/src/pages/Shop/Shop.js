@@ -19,7 +19,7 @@ const Shop = () => {
           <ShopSideNav />
         </div>
         <div className="w-full mdl:w-[80%] lgl:w-[75%] h-full flex flex-col gap-10">
-          <ProductBanner itemsPerPageFromBanner={itemsPerPageFromBanner} />
+          {/* <ProductBanner itemsPerPageFromBanner={itemsPerPageFromBanner} /> */}
           <Pagination itemsPerPage={itemsPerPage} />
         </div>
       </div>

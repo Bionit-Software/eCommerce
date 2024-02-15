@@ -3,6 +3,7 @@ import constants from "../constants";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Pagination from "./Pagination";
+import Loader from "../common/Loader";
 
 const TableProductos = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -11,24 +12,55 @@ const TableProductos = () => {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState(""); // Estado para el término de búsqueda
   const navigate = useNavigate();
-  console.log(currentPage, totalPages);
-  
-  const fetchProducts = async (page: number) => {
+  const [createdOrder, setCreatedOrder] = useState("DESC");
+  const [stockOrder, setStockOrder] = useState("neutral");
+
+  const handleCreated = () => {
+    let newCreatedOrder;
+    if (createdOrder === "ASC") {
+      newCreatedOrder = "DESC";
+    } else if (createdOrder === "DESC") {
+      newCreatedOrder = "neutral"; // Cambiar a estado neutral
+    } else {
+      newCreatedOrder = "ASC";
+    }
+    setCreatedOrder(newCreatedOrder);
+    fetchProducts(currentPage, newCreatedOrder, createdOrder);
+  }
+
+  const handleStock = () => {
+    let newStockOrder;
+    if (stockOrder === "ASC") {
+      newStockOrder = "DESC";
+    } else if (stockOrder === "DESC") {
+      newStockOrder = "neutral"; // Cambiar a estado neutral
+    } else {
+      newStockOrder = "ASC";
+    }
+    setStockOrder(newStockOrder); // Actualizar estado del orden de stock
+    fetchProducts(currentPage, newStockOrder, createdOrder);
+  };
+
+  const fetchProducts = async (page: number, stockOrder: string, createdOrder: string) => {
+
     try {
-      const response = await axios.get(constants.API_URL + `productos/pages/${page}?searchTerm=${searchTerm}`); // Incluir el término de búsqueda en la URL
+      setLoading(true);
+      const response = await axios.get(constants.API_URL + `productos/pages/${page}?searchTerm=${searchTerm}&stockOrder=${stockOrder}&createdOrder=${createdOrder}`);
       setProducts(response.data.productos);
+      console.log(response.data.productos);
       setTotalPages(response.data.totalPages);
     } catch (error) {
       console.error('Error fetching data:', error);
       // Handle the error or display a user-friendly message
     }
+    setLoading(false);
   };
 
   const fetchData = async () => {
     try {
       const numeroPaginas = await axios.get(constants.API_URL + 'productos/totalPages');
       setTotalPages(numeroPaginas.data);
-      await fetchProducts(currentPage); // Llama a fetchProducts con la página actual
+      await fetchProducts(currentPage, stockOrder, createdOrder);
     } catch (error) {
       console.error('Error fetching data:', error);
       // Handle the error or display a user-friendly message
@@ -47,10 +79,6 @@ const TableProductos = () => {
     return () => clearTimeout(timer);
   }, [currentPage, searchTerm]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
   const parsearFecha = (fecha: string) => {
     const fechaParseada = new Date(fecha);
     return fechaParseada.toLocaleDateString();
@@ -60,7 +88,8 @@ const TableProductos = () => {
     axios.delete(constants.API_URL + 'productos/' + id)
       .then((response) => {
         console.log(response);
-        window.location.reload();
+        // products.filter((product: any) => product.ID !== id);
+        fetchData();
       })
   }
 
@@ -69,9 +98,15 @@ const TableProductos = () => {
     setCurrentPage(1);
   };
 
+  const urlImage = (images) => {
+    const urls = images.split(',');
+    return urls[0];
+  }
+
   return (
     // <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
     <>
+    {loading ? <Loader /> : null}
       <div className="max-h-115 md:max-h-125 lg:max-h-180 overflow-y-auto overflow-x-auto">
         <table className="w-full table-auto">
           <thead className="sticky top-0 bg-gray-2 dark:bg-meta-4">
@@ -90,7 +125,42 @@ const TableProductos = () => {
                 Precio
               </th>
               <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white text-center">
-                Stock
+                <button
+                  className="flex items-center justify-center"
+                  onClick={handleStock}
+                >
+                  Stock
+                  <svg
+                    className="w-4 h-4 ml-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    {stockOrder === "ASC" ? (
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    ) : stockOrder === "DESC" ? (
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 15l7-7 7 7"
+                      />
+                    ) : (
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 4h16M4 12h16M4 20h16"
+                      />
+                    )}
+                  </svg>
+                </button>
               </th>
               <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white text-center">
                 Categoria
@@ -99,7 +169,42 @@ const TableProductos = () => {
                 Marca
               </th>
               <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white text-center">
-                Creado
+                <button
+                  className="flex items-center justify-center"
+                  onClick={handleCreated}
+                >
+                  Fecha
+                  <svg
+                    className="w-4 h-4 ml-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    {createdOrder === "ASC" ? (
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    ) : createdOrder === "DESC" ? (
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 15l7-7 7 7"
+                      />
+                    ) : (
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 4h16M4 12h16M4 20h16"
+                      />
+                    )}
+                  </svg>
+                </button>
               </th>
               <th className="py-4 px-4 font-medium text-black dark:text-white text-center">
                 Acciones
@@ -143,12 +248,12 @@ const TableProductos = () => {
             )
             }
             {products !== undefined && products.map((product: any) => (
-              <tr key={product.id} className="border-b border-[#eee] dark:border-strokedark">
+              <tr key={product.ID} className="border-b border-[#eee] dark:border-strokedark">
                 <td className="py-5 px-4 pl-9 xl:pl-11">
                   <div className="flex items-center">
                     <div className="w-16 h-16 mr-3 ">
                       <img
-                        src={product.url_image}
+                        src={urlImage(product.imagenes)}
                         alt=""
                         className='w-full h-full object-cover'
                       />
