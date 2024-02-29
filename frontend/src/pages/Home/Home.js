@@ -9,6 +9,7 @@ import YearProduct from "../../components/home/YearProduct/YearProduct";
 import URL from "../../constantes"
 const Home = () => {
   const [productos, setProductos] = useState([]);
+  const [slides, setSlides] = useState([]);
   useEffect(() => {
     const getProducts = async () => {
       try {
@@ -20,12 +21,23 @@ const Home = () => {
         console.log(error);
       }
     };
+    const getSlides = async () => {
+      try {
+        const response = await fetch(URL.API_URL + "paginas/principal/slider/all");
+        const data = await response.json();
+        setSlides(data);
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
     getProducts();
+    getSlides();
   }, []);
 
   return (
     <div className="w-full mx-auto">
-      <Banner />
+      <Banner slides={slides}/>
       {/* <BannerBottom /> */}
       <div className="max-w-container mx-auto px-4">
         {/* <Sale /> */}

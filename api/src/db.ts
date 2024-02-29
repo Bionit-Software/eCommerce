@@ -11,9 +11,9 @@ const db: Pool = createPool({
 // const db: Pool = createPool({
 //   host: 'localhost',
 //   port: 3306,
-//   database: 'tenedora_ecommerce',
-//   user: 'tenedora_ecommerce',
-//   password: 'tenedora41.',
+//   database: 'tiendau_ecommerce',
+//   user: 'tiendau_ecommerce',
+//   password: 'tiendau_ecommerce41.',
 // } as any);
 
 export default db;

@@ -4,16 +4,12 @@ import { addToCart } from "../../../redux/orebiSlice";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const ProductInfo = ({ productInfo }) => {
-  console.log(productInfo)
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const products = useSelector((state) => state.orebiReducer.products);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const id = searchParams.get("id");
-  console.log(id)
-  console.log(products)
-  // console.log(products.filter((item) => item._id === id) ? "esta la id" + id : "no esta la id" + id)
   const foundItem = products.find(item => Number(item._id) === Number(id));
   console.log(foundItem ? "Esta la id " + id : "No esta la id " + id);
   return (
@@ -43,7 +39,7 @@ const ProductInfo = ({ productInfo }) => {
                   name: productInfo.nombre,
                   quantity: 1,
                   stock: productInfo.stock,
-                  image: productInfo.url_image || productInfo.imagenes?.split(',')[0],
+                  image: productInfo.url_image.split(',')[0] || productInfo.imagenes.split(',')[0] || productInfo.imagenes?.split(',')[0], 
                   badge: productInfo.badge,
                   price: productInfo.precio,
                   colors: productInfo.color,

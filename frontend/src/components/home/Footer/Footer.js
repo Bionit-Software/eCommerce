@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { FaFacebook, FaYoutube, FaLinkedin, FaGithub } from "react-icons/fa";
+import { FaFacebook, FaYoutube, FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa";
 import FooterListTitle from "./FooterListTitle";
 import { paymentCard } from "../../../assets/images";
 import Image from "../../designLayouts/Image";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const [emailInfo, setEmailInfo] = useState("");
@@ -13,7 +14,7 @@ const Footer = () => {
   const emailValidation = () => {
     return String(emailInfo)
       .toLocaleLowerCase()
-      .match(/^\w+([-]?\w+)*@\w+([-]?\w+)*(\.\w{2,3})+$/);
+      .match(/^\w+([-]?\w+)*@\w+([.-]?\w+)*\.\w{2,}$/);
   };
 
   const handleSubscription = () => {
@@ -34,16 +35,30 @@ const Footer = () => {
           <FooterListTitle title="Acerca de Tienda de Autor" />
           <div className="flex flex-col gap-6">
             <p className="text-base w-full xl:w-[80%]">
-              TEXTO QUE QUIERA EL CLIENTE
+              <Link 
+                to="/nosotros"
+                className="text-lightText hover:text-black hover:underline decoration-[1px] decoration-gray-500 underline-offset-2 cursor-pointer duration-300"
+              >
+                Nosotros
+              </Link>
+              {" "}
+              <span className="text-lightText">|</span>
+              {" "}
+              <Link 
+                to="/contacto"
+                className="text-lightText hover:text-black hover:underline decoration-[1px] decoration-gray-500 underline-offset-2 cursor-pointer duration-300"
+              >
+                Contacto
+              </Link>
             </p>
             <ul className="flex items-center gap-2">
               <a
-                href="https://www.youtube.com/"
+                href="https://www.instagram.com/tiendadeautor.ar"
                 target="_blank"
                 rel="noreferrer"
               >
                 <li className="w-7 h-7 bg-primeColor text-gray-100 hover:text-white cursor-pointer text-lg rounded-full flex justify-center items-center hover:bg-black duration-300">
-                  <FaYoutube />
+                  <FaInstagram />
                 </li>
               </a>
               {/* <a
@@ -56,7 +71,7 @@ const Footer = () => {
                 </li>
               </a> */}
               <a
-                href="https://www.facebook.com/"
+                href="https://www.facebook.com/tiendadeautor.ar"
                 target="_blank"
                 rel="noreferrer"
               >
@@ -77,22 +92,19 @@ const Footer = () => {
           </div>
         </div>
         <div>
-          <FooterListTitle title="Tienda" />
+          <FooterListTitle title="Otros" />
           <ul className="flex flex-col gap-2">
             <li className="font-titleFont text-base text-lightText hover:text-black hover:underline decoration-[1px] decoration-gray-500 underline-offset-2 cursor-pointer duration-300">
-              Instrumentos musicales
+              Términos y condiciones
             </li>
             <li className="font-titleFont text-base text-lightText hover:text-black hover:underline decoration-[1px] decoration-gray-500 underline-offset-2 cursor-pointer duration-300">
-              Artesanías Cerámica
+              Política de privacidad
             </li>
             <li className="font-titleFont text-base text-lightText hover:text-black hover:underline decoration-[1px] decoration-gray-500 underline-offset-2 cursor-pointer duration-300">
-              Artesanías Lana
+              Preguntas frecuentes
             </li>
             <li className="font-titleFont text-base text-lightText hover:text-black hover:underline decoration-[1px] decoration-gray-500 underline-offset-2 cursor-pointer duration-300">
-              Artesanías Madera
-            </li>
-            <li className="font-titleFont text-base text-lightText hover:text-black hover:underline decoration-[1px] decoration-gray-500 underline-offset-2 cursor-pointer duration-300">
-              Artesanías Cuero
+              Botón de arrepentimiento
             </li>
           </ul>
         </div>
@@ -116,11 +128,11 @@ const Footer = () => {
             </li>
           </ul>
         </div> */}
-        {/* <div className="col-span-2 flex flex-col items-center w-full px-4">
-          <FooterListTitle title="Subscribe to our newsletter." />
+        <div className="col-span-2 flex flex-col items-center w-full px-4">
+          <FooterListTitle title="Suscribite al newsletter." />
           <div className="w-full">
             <p className="text-center mb-4">
-              A at pellentesque et mattis porta enim elementum.
+              y recibí las últimas noticias
             </p>
             {subscription ? (
               <motion.p
@@ -129,7 +141,7 @@ const Footer = () => {
                 transition={{ duration: 0.5 }}
                 className="w-full text-center text-base font-titleFont font-semibold text-green-600"
               >
-                Subscribed Successfully !
+                Gracias por suscribirte!
               </motion.p>
             ) : (
               <div className="w-full flex-col xl:flex-row flex justify-between items-center gap-4">
@@ -139,7 +151,7 @@ const Footer = () => {
                     value={emailInfo}
                     className="w-full h-12 border-b border-gray-400 bg-transparent px-4 text-primeColor text-lg placeholder:text-base outline-none"
                     type="text"
-                    placeholder="Insert your email ...*"
+                    placeholder="Ingresá tu email..."
                   />
                   {errMsg && (
                     <p className="text-red-600 text-sm font-semibold font-titleFont text-center animate-bounce mt-2">
@@ -151,19 +163,12 @@ const Footer = () => {
                   onClick={handleSubscription}
                   className="bg-white text-lightText w-[30%] h-10 hover:bg-black hover:text-white duration-300 text-base tracking-wide"
                 >
-                  Subscribe
+                  Subscrirse
                 </button>
               </div>
             )}
-
-            <Image
-              className={`w-[80%] lg:w-[60%] mx-auto ${
-                subscription ? "mt-2" : "mt-6"
-              }`}
-              imgSrc={paymentCard}
-            />
           </div>
-        </div> */}
+        </div>
       </div>
     </div>
   );

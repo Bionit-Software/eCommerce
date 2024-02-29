@@ -1,7 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import NavTitle from "./NavTitle";
+import { motion } from "framer-motion";
 
-const Price = () => {
+const Price = ({ handleFilterChangePrecio }) => {
+  const [selectedPrice, setSelectedPrice] = useState([]); // [1]
+  const handlePriceChange = (filteredPrecio) => {
+    console.log(filteredPrecio)
+    handleFilterChangePrecio(filteredPrecio);
+    setSelectedPrice(filteredPrecio);
+  }
   const priceList = [
     {
       _id: 950,
@@ -42,9 +49,26 @@ const Price = () => {
           {priceList.map((item) => (
             <li
               key={item._id}
-              className="border-b-[1px] border-b-[#F0F0F0] pb-2 flex items-center gap-2 hover:text-primeColor hover:border-gray-400 duration-300"
+              className="border-b-[1px] border-b-[#F0F0F0] pb-2 flex items-center gap-2 hover:text-primeColor hover:border-gray-400 cursor-pointer duration-300"
+              onClick={() => handlePriceChange(item)}
             >
-              ${item.priceOne.toFixed(2)} - ${item.priceTwo.toFixed(2)}
+              ${item.priceOne} - ${item.priceTwo}
+              {selectedPrice?.priceTwo === item?.priceTwo && (
+                // simbolito de x para quitar la categoria seleccionada animado con motion framer
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 0.5 }}
+                  onHoverStart={{ scale: 1.2 }}
+                  className="text-[#767676] text-lg cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation(); // Detiene la propagación del evento
+                    handlePriceChange(null);
+                  }}
+                >
+                  {String.fromCharCode(10005)}
+                </motion.div>
+              )}
             </li>
           ))}
         </ul>

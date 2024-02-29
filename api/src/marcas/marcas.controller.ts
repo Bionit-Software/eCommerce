@@ -1,15 +1,24 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Put,
+  Query,
+} from '@nestjs/common';
 import { MarcasService } from './marcas.service';
-import { CreateMarcaDto } from './dto/create-marca.dto';
-import { UpdateMarcaDto } from './dto/update-marca.dto';
 
 @Controller('marcas')
 export class MarcasController {
   constructor(private readonly marcasService: MarcasService) {}
 
-  @Post()
-  create(@Body() createMarcaDto: CreateMarcaDto) {
-    return this.marcasService.create(createMarcaDto);
+  @Post('create')
+  create(@Body() body: any) {
+    console.log(body);
+    return this.marcasService.create(body.Nombre);
   }
 
   @Get('all')
@@ -17,14 +26,33 @@ export class MarcasController {
     return this.marcasService.findAll();
   }
 
+  @Get('totalPages')
+  async totalPages() {
+    const res = await this.marcasService.totalPages();
+    return res;
+  }
+
+  @Get('pages/:page')
+  async page(
+    @Param('page') page: number,
+    @Query('searchTerm') searchTerm: string,
+  ) {
+    console.log(searchTerm);
+    const { marcas, totalPages } = await this.marcasService.pages(
+      page,
+      searchTerm,
+    );
+    return { marcas, totalPages };
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.marcasService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMarcaDto: UpdateMarcaDto) {
-    return this.marcasService.update(+id, updateMarcaDto);
+  @Put('edit/:id')
+  update(@Param('id') id: string, @Body() body: any) {
+    return this.marcasService.update(id, body);
   }
 
   @Delete(':id')

@@ -67,7 +67,8 @@ const NewArrivals = ({ productos }) => {
               <Suspense fallback={<div>Cargando...</div>}>
                 <Product
                   id={producto.id}
-                  url_image={producto?.imagenes?.split(',')[0]}
+                  url_image={producto?.imagenes}
+                  imagenes={producto?.imagenes}
                   nombre={producto.nombre}
                   precio={producto.precio}
                   // color="Black"

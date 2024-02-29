@@ -6,7 +6,7 @@ const Contact = () => {
   const location = useLocation();
   const [prevLocation, setPrevLocation] = useState("");
   useEffect(() => {
-    setPrevLocation(location.state.data);
+    setPrevLocation(location?.state?.data);
   }, [location]);
 
   const [clientName, setclientName] = useState("");

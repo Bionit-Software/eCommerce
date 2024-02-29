@@ -10,25 +10,23 @@ const Breadcrumb = ({ pageName }: BreadcrumbProps) => {
       </h2>
 
       <nav className='flex'>
-        {pageName === 'Productos' || 
-        pageName === 'Categorias' ||
-        pageName === 'Marcas' ?
-         (
-          <Link
-            to={`/tablas/${pageName.toLowerCase()}/add`}
-            className="text-primary">
-            Agregar {pageName}
-          </Link>
-        ) : null
-      }
-        {pageName !== 'Productos' && (
-          <ol className="flex items-center gap-2">
-            <li>
-              <Link to="/">Dashboard /</Link>
-            </li>
-            <li className="text-primary">{pageName}</li>
-          </ol>
-        )}
+        {pageName === 'Productos' ?
+          (
+            <>
+              <Link
+                to={`/tablas/${pageName.toLowerCase()}/add`}
+                className="text-primary mr-4">
+                Agregar {pageName}
+              </Link>
+              <ol className="flex items-center gap-2">
+                <li>
+                  <Link to="/">Dashboard /</Link>
+                </li>
+                <li className="text-primary">{pageName}</li>
+              </ol>
+            </>
+          ) : null
+        }
       </nav>
     </div>
   );

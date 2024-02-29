@@ -6,18 +6,19 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
+  Put,
 } from '@nestjs/common';
 import { CategoriasService } from './categorias.service';
-import { CreateCategoriaDto } from './dto/create-categoria.dto';
-import { UpdateCategoriaDto } from './dto/update-categoria.dto';
 
 @Controller('categorias')
 export class CategoriasController {
   constructor(private readonly categoriasService: CategoriasService) {}
 
-  @Post()
-  create(@Body() createCategoriaDto: CreateCategoriaDto) {
-    return this.categoriasService.create(createCategoriaDto);
+  @Post('create')
+  create(@Body() body: any) {
+    console.log(body);
+    return this.categoriasService.create(body.Nombre);
   }
 
   @Get('all')
@@ -25,17 +26,34 @@ export class CategoriasController {
     return this.categoriasService.findAll();
   }
 
+  @Get('totalPages')
+  async totalPages() {
+    const res = await this.categoriasService.totalPages();
+    return res;
+  }
+
+  @Get('pages/:page')
+  async page(
+    @Param('page') page: number,
+    @Query('searchTerm') searchTerm: string,
+  ) {
+    console.log(searchTerm);
+    const { categorias, totalPages } = await this.categoriasService.pages(
+      page,
+      searchTerm,
+    );
+    return { categorias, totalPages };
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.categoriasService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateCategoriaDto: UpdateCategoriaDto,
-  ) {
-    return this.categoriasService.update(+id, updateCategoriaDto);
+  @Put('edit/:id')
+  update(@Param('id') id: string, @Body() body: any) {
+    console.log(body + 'asdcas');
+    return this.categoriasService.update(id, body);
   }
 
   @Delete(':id')

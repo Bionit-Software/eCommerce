@@ -24,7 +24,10 @@ export class ProductosService {
       for (const filename of filenames) {
         await db.query(
           'INSERT INTO imagenesproducto (url, productoId) VALUES (?, ?)',
-          ['https://api.tenedores.ar/uploads/' + filename.filename, productoId],
+          [
+            'https://api.tiendadeautor.ar/uploads/' + filename.filename,
+            productoId,
+          ],
         );
       }
 
@@ -76,10 +79,9 @@ export class ProductosService {
       GROUP BY p.id`,
       [`%${nombre}%`],
     );
-    console.log(productos);
     return productos;
   }
-  update(id: number, body: any, filenames: any[]) {
+  async update(id: number, body: any, filenames: any[]) {
     console.log(body);
     console.log(filenames);
     const {
@@ -98,8 +100,8 @@ export class ProductosService {
         'UPDATE productos SET nombre = ?, descripcion = ?, precio = ?, stock = ?, idCategoria = ?, idMarca = ? WHERE id = ?',
         [nombre, descripcion, precio, stock, idCategoria, idMarca, id],
       );
-      const uploadDirectory = path.join(__dirname, '../..', 'uploads'); // entorno local
-      // const uploadDirectory = path.join(__dirname, '..', 'uploads'); //produccion
+      // const uploadDirectory = path.join(__dirname, '../..', 'uploads'); // entorno local
+      const uploadDirectory = path.join(__dirname, '..', 'uploads'); //produccion
       if (photosRemoved !== '') {
         for (const photo of removedPhotos) {
           const url = photo.split('/').pop();
@@ -115,7 +117,7 @@ export class ProductosService {
         for (const filename of filenames) {
           db.query(
             'INSERT INTO imagenesproducto (url, productoId) VALUES (?, ?)',
-            ['https://api.tenedores.ar/uploads/' + filename.filename, id],
+            ['https://api.tiendadeautor.ar/uploads/' + filename.filename, id],
           );
         }
       }
@@ -184,5 +186,58 @@ export class ProductosService {
     );
     const totalPages = Math.ceil(totalMatch[0].total / itemsPerPage);
     return { productos, totalPages };
+  }
+
+  async tiendaPages(
+    page: number,
+    categoria: string,
+    precioDesde: string,
+    precioHasta: string,
+  ) {
+    console.log(page, 'page');
+    console.log(categoria, 'categoria');
+    console.log(precioDesde, 'precioDesde');
+    console.log(precioHasta, 'precioHasta');
+
+    const itemsPerPage = 12; // Total de productos por página
+    const offset = (page - 1) * itemsPerPage;
+
+    let whereClause = '';
+
+    // Agregar condiciones a la cláusula WHERE según los parámetros recibidos
+    if (categoria !== 'undefined') {
+      whereClause += ` WHERE idCategoria = '${Number(categoria)}'`;
+    }
+    if (precioDesde !== 'undefined' && precioHasta !== 'undefined') {
+      if (whereClause === '') {
+        whereClause += ` WHERE precio >= ${precioDesde} AND precio <= ${precioHasta}`;
+      } else {
+        whereClause += ` AND precio >= ${precioDesde} AND precio <= ${precioHasta}`;
+      }
+    }
+
+    const query = `SELECT p.id, p.nombre, p.descripcion, p.precio, p.stock, p.idCategoria, p.idMarca, p.createdAt, p.updatedAt, GROUP_CONCAT(ip.url) AS imagenes
+      FROM productos p
+      LEFT JOIN imagenesproducto ip ON p.id = ip.productoId
+      ${whereClause}
+      GROUP BY p.id
+      LIMIT ${offset}, ${itemsPerPage}`;
+
+    console.log(query);
+
+    try {
+      const [productos] = await db.query(query);
+
+      // Consulta para obtener el total de productos que coinciden con los filtros
+      let countQuery = 'SELECT COUNT(*) as total FROM productos';
+      countQuery += whereClause;
+      const [totalMatch] = await db.query(countQuery);
+      const totalPages = Math.ceil(totalMatch[0].total / itemsPerPage);
+
+      return { productos, totalPages };
+    } catch (error) {
+      console.error('Error al ejecutar la consulta:', error);
+      throw error; // Propagar el error para que sea manejado por el código que llama a esta función
+    }
   }
 }

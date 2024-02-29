@@ -24,6 +24,8 @@ import ProductDetails from "./pages/ProductDetails/ProductDetails";
 import Shop from "./pages/Shop/Shop";
 import { FloatingWhatsApp } from "react-floating-whatsapp";
 import { logoLight } from "./assets/images";
+import Exito from "./pages/Mercadopago/Exito";
+import Error from "./pages/Mercadopago/Error";
 
 const Layout = () => {
   return (
@@ -65,6 +67,8 @@ const router = createBrowserRouter(
         <Route path="/producto/:_id" element={<ProductDetails />}></Route>
         <Route path="/carrito" element={<Cart />}></Route>
         <Route path="/parcela-pago" element={<Payment />}></Route>
+        <Route path="/exito" element={<Exito />}></Route>
+        <Route path="/error" element={<Error />}></Route>
       </Route>
       <Route path="/signup" element={<SignUp />}></Route>
       <Route path="/signin" element={<SignIn />}></Route>

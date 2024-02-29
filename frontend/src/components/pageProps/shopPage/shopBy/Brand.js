@@ -1,39 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import NavTitle from "./NavTitle";
-
-const Brand = () => {
-  const [showBrands, setShowBrands] = useState(true);
-  const brands = [
-    {
-      _id: 9006,
-      title: "Instrumentos musicales",
-    },
-    {
-      _id: 9007,
-      title: "Artesanías Cerámica"
-    },
-    {
-      _id: 9008,
-      title: "Artesanías Lana"
-    },
-    {
-      _id: 9009,
-      title: "Artesanías Madera"
-    },
-    {
-      _id: 9010,
-      title: "Artesanías Cuero"
-    },
-    {
-      _id: 9011,
-      title: "Gastronomía Dulces"
-    },
-    {
-      _id: 9012,
-      title: "Gastronomía Vinos"
+import axios from "axios";
+import constantes from "../../../../constantes";
+const Categorias = ({ handleFilterChangeCategoria }) => {
+  const [categorias, setCategorias] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(constantes.API_URL + "categorias/all");
+        setCategorias(response.data);
+      } catch (error) {
+        console.log(error);
+      }
     }
-  ];
+    fetchData();
+  }, []);
+  
+  const [showBrands, setShowBrands] = useState(true);
+
+  const handleCategoryChange = (selectedCategory) => {
+    handleFilterChangeCategoria(selectedCategory);
+    setSelectedCategory(selectedCategory);
+  };
 
   return (
     <div>
@@ -50,12 +40,29 @@ const Brand = () => {
           transition={{ duration: 0.5 }}
         >
           <ul className="flex flex-col gap-4 text-sm lg:text-base text-[#767676]">
-            {brands.map((item) => (
+            {categorias.map((item) => (
               <li
-                key={item._id}
-                className="border-b-[1px] border-b-[#F0F0F0] pb-2 flex items-center gap-2 hover:text-primeColor hover:border-gray-400 duration-300"
+                key={item.ID}
+                className="border-b-[1px] border-b-[#F0F0F0] pb-2 flex items-center gap-2 hover:text-primeColor hover:border-gray-400 cursor-pointer duration-300"
+                onClick={() => handleCategoryChange(item.ID)}
               >
-                {item.title}
+                {item.Nombre}
+                {selectedCategory === item.ID && (
+                  // simbolito de x para quitar la categoria seleccionada animado con motion framer
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 0.5 }}
+                    onHoverStart={{ scale: 1.2 }}
+                    className="text-[#767676] text-lg cursor-pointer"
+                    onClick={(e) => {
+                      e.stopPropagation(); // Detiene la propagación del evento
+                      handleCategoryChange(undefined);
+                    }}
+                  >
+                    {String.fromCharCode(10005)}
+                  </motion.div>
+                )}
               </li>
             ))}
           </ul>
@@ -65,4 +72,4 @@ const Brand = () => {
   );
 };
 
-export default Brand;
+export default Categorias;

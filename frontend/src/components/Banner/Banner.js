@@ -8,7 +8,8 @@ import {
 } from "../../assets/images";
 import Image from "../designLayouts/Image";
 
-const Banner = () => {
+const Banner = ({slides}) => {
+  // const [urls, setUrls] = useState(slides.urls.split(','));
   const [dotActive, setDocActive] = useState(0);
   const settings = {
     dots: true,
@@ -102,24 +103,14 @@ const Banner = () => {
   return (
     <div className="w-full bg-white">
       <Slider {...settings}>
-        <Link to="/tienda">
-          <div className="w-full h-[350px] justify-center text-center">
-            {/* <Image imgSrc={bannerImgOne} /> */}
-            slider 1
-          </div>
-        </Link>
-        <Link to="/tienda">
-          <div className="w-full h-[350px] justify-center text-center">
-            slider 2
-            {/* <Image imgSrc={bannerImgTwo} /> */}
-          </div>
-        </Link>
-        <Link to="/tienda">
-          <div className="w-full h-[350px] justify-center text-center">
-            slider 3
-            {/* <Image imgSrc={bannerImgThree} /> */}
-          </div>
-        </Link>
+        {slides?.data?.map((slide) => (
+          <Link to="/tienda" key={slide.id}>
+            <div className="w-full h-[450px] justify-center text-center">
+              <img src={slide.url} alt={slide.url} className="w-full h-full object-fit"/>
+            </div>
+          </Link>
+        ))}
+
       </Slider>
     </div>
   );

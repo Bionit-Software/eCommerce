@@ -264,19 +264,6 @@ function ProductoAdd() {
                     </div>
                   )}
                   <div className="flex w-full gap-4.5">
-                    {/* <div
-                      id="FileUpload"
-                      className="relative block w-6/12 cursor-pointer appearance-none rounded border-2 border-primary bg-gray dark:bg-meta-4 sm:py-7.5 text-center"
-                    >
-                      <input
-                        type="file"
-                        accept="image/*"
-                        multiple
-                        className="absolute inset-0 z-50 m-0 h-full w-full cursor-pointer p-0 opacity-0 outline-none"
-                        onChange={addNewPhoto}
-                      />
-                      Agregar Imagen
-                    </div> */}
                     <button
                       className="flex justify-center rounded w-6/12 bg-primary py-2 px-6 font-medium text-gray hover:shadow-1"
                       type="submit"

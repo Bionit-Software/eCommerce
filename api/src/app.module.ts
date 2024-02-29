@@ -7,6 +7,8 @@ import { join } from 'path';
 import { CategoriasModule } from './categorias/categorias.module';
 import { MarcasModule } from './marcas/marcas.module';
 import { MercadopagoModule } from './mercadopago/mercadopago.module';
+import { UsuariosModule } from './usuarios/usuarios.module';
+import { PaginasModule } from './paginas/paginas.module';
 @Module({
   imports: [
     ServeStaticModule.forRoot({
@@ -20,6 +22,8 @@ import { MercadopagoModule } from './mercadopago/mercadopago.module';
     CategoriasModule,
     MarcasModule,
     MercadopagoModule,
+    UsuariosModule,
+    PaginasModule,
   ],
   controllers: [ProductosController],
   providers: [ProductosService],

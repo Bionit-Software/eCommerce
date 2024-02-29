@@ -1,5 +1,6 @@
 import React from "react";
 import { AiOutlineCopyright } from "react-icons/ai";
+import { Link } from "react-router-dom";
 
 const FooterBottom = () => {
   return (
@@ -10,11 +11,11 @@ const FooterBottom = () => {
             <AiOutlineCopyright />
           </span>
           Copyright 2024 |
-          <a href="https://reactbd.com/" target="_blank" rel="noreferrer">
+          <Link to="/" target="_blank" rel="noreferrer">
             <span className="ml-1 font-medium group-hover:text-primeColor">
               Tienda de Autor
             </span>
-          </a>
+          </Link>
         </p>
       </div>
     </div>

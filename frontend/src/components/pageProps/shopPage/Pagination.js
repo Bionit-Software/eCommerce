@@ -3,8 +3,9 @@ import ReactPaginate from "react-paginate";
 import Product from "../../home/Products/Product";
 import axios from "axios";
 import URL from "../../../constantes";
+import PaginationShop from "../../Pagination";
 function Items({ currentItems }) {
-  console.log(currentItems + "currentItems")
+
   return (
     <>
       {currentItems &&
@@ -12,7 +13,8 @@ function Items({ currentItems }) {
           <div key={item.id} className="w-full">
             <Product
               id={item.id}
-              url_image={item.imagenes?.split(',')[0]}
+              url_image={item.imagenes}
+              imagenes={item.imagenes}
               nombre={item.nombre}
               precio={item.precio}
               stock={item.stock}
@@ -26,64 +28,55 @@ function Items({ currentItems }) {
   );
 }
 
-const Pagination = ({ itemsPerPage }) => {
-  // Here we use item offsets; we could also use page offsets
-  // following the API or data you're working with.
-  const [itemOffset, setItemOffset] = useState(0);
-  const [itemStart, setItemStart] = useState(1);
-  const [items, setItems] = useState([]);
-  // Simulate fetching items from another resources.
-  // (This could be items from props; or items loaded in a local state
-  // from an API endpoint with useEffect and useState)
-  useEffect (() => {
-    const fetchItems = async () => {
-      const res = await axios.get(URL.API_URL + "productos/all");
-      console.log(res.data)
-      setItems(res.data);
-    };
-    fetchItems();
-  }
-  , []);
-  const endOffset = itemOffset + itemsPerPage;
-  //   console.log(`Loading items from ${itemOffset} to ${endOffset}`);
-  const currentItems = items.slice(itemOffset, endOffset);
-  console.log(currentItems + "currentItems")
-  const pageCount = Math.ceil(items.length / itemsPerPage);
+const Pagination = ({ itemsPerPage, categoria, precio }) => {
 
-  // Invoke when user click to request another page.
-  const handlePageClick = (event) => {
-    const newOffset = (event.selected * itemsPerPage) % items.length;
-    setItemOffset(newOffset);
-    // console.log(
-    //   `User requested page number ${event.selected}, which is offset ${newOffset},`
-    // );
-    setItemStart(newOffset);
+  console.log(categoria + "categoria")
+  console.log(precio + "precio")
+  const [items, setItems] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const fetchProducts = async (page, categoria, precio) => {
+    try {
+      setLoading(true);
+      const response = await axios.get(URL.API_URL + `productos/tienda/pages/${page}?categoria=${categoria}&precioDesde=${precio?.priceOne}&precioHasta=${precio?.priceTwo}`)
+      setItems(response.data.productos);
+      console.log(response.data.productos);
+      setTotalPages(response.data.totalPages);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+    setLoading(false);
   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const numeroPaginas = await axios.get(URL.API_URL + 'productos/totalPages');
+        console.log(numeroPaginas.data)
+        setTotalPages(numeroPaginas.data);
+        await fetchProducts(currentPage, categoria, precio);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [currentPage, categoria, precio]);
 
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 mdl:gap-4 lg:gap-10">
-        <Items currentItems={currentItems} />
+        <Items currentItems={items} />
       </div>
-      <div className="flex flex-col mdl:flex-row justify-center mdl:justify-between items-center">
-        <ReactPaginate
-          nextLabel=""
-          onPageChange={handlePageClick}
-          pageRangeDisplayed={3}
-          marginPagesDisplayed={2}
-          pageCount={pageCount}
-          previousLabel=""
-          pageLinkClassName="w-9 h-9 border-[1px] border-lightColor hover:border-gray-500 duration-300 flex justify-center items-center"
-          pageClassName="mr-6"
-          containerClassName="flex text-base font-semibold font-titleFont py-10"
-          activeClassName="bg-black text-white"
+      <div className="justify-center mdl:justify-between items-center mt-5">
+        <PaginationShop
+          totalPages={totalPages}
+          currentPage={currentPage}
+          changePage={setCurrentPage}
         />
-
-        <p className="text-base font-normal text-lightText">
-        Productos {itemStart === 0 ? 1 : itemStart} de {endOffset} a{" "}
-          {items.length}
-        </p>
       </div>
+
     </div>
   );
 };

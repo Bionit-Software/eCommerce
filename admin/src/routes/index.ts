@@ -1,5 +1,4 @@
 import { lazy } from 'react';
-import ProductoEdit from '../pages/ProductoEdit';
 
 const Calendar = lazy(() => import('../pages/Calendar'));
 const Chart = lazy(() => import('../pages/Chart'));
@@ -9,10 +8,15 @@ const Profile = lazy(() => import('../pages/Profile'));
 const Settings = lazy(() => import('../pages/Settings'));
 const TablesProducto = lazy(() => import('../pages/TablesProducto'));
 const ProductoAdd = lazy(() => import('../pages/ProductoAdd'));
+const ProductoEdit = lazy(() => import('../pages/ProductoEdit'));
+const TablesCategorias = lazy(() => import('../pages/TablesCategorias'));
+const TablesMarcas = lazy(() => import('../pages/TablesMarcas'));
 const Alerts = lazy(() => import('../pages/UiElements/Alerts'));
 const Buttons = lazy(() => import('../pages/UiElements/Buttons'));
 const Paginas = lazy(() => import('../pages/Paginas'));
 const Facturas = lazy(() => import('../pages/Facturas'));
+const Principal = lazy(() => import('../pages/Principal'));
+
 const coreRoutes = [
   {
     path: '/calendar',
@@ -50,6 +54,16 @@ const coreRoutes = [
     component: ProductoEdit,
   },
   {
+    path: '/tablas/categorias',
+    title: 'Tabla Categoria',
+    component: TablesCategorias,
+  },
+  {
+    path: '/tablas/marcas',
+    title: 'Tabla marcas',
+    component: TablesMarcas,
+  },
+  {
     path: '/settings',
     title: 'Settings',
     component: Settings,
@@ -79,6 +93,11 @@ const coreRoutes = [
     title: 'Facturas',
     component: Facturas,
   },
+  {
+    path: '/paginas/principal',
+    title: 'Principal',
+    component: Principal,
+  }
 ];
 
 const routes = [...coreRoutes];

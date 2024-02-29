@@ -2,8 +2,6 @@ import {
   Controller,
   Get,
   Post,
-  // Body,
-  // Patch,
   Param,
   Delete,
   Request,
@@ -23,7 +21,7 @@ export class ProductosController {
 
   @Post('add')
   @UseInterceptors(
-    FilesInterceptor('files', 5, {
+    FilesInterceptor('files', 4, {
       storage: diskStorage({
         destination: './uploads',
         filename: (req, file, cb) => {
@@ -114,6 +112,21 @@ export class ProductosController {
       searchTerm,
       stockOrder,
       createdOrder,
+    );
+    return { productos, totalPages };
+  }
+  @Get('tienda/pages/:page')
+  async tiendaPage(
+    @Param('page') page: number,
+    @Query('categoria') categoria: string,
+    @Query('precioDesde') precioDesde: string,
+    @Query('precioHasta') precioHasta: string,
+  ) {
+    const { productos, totalPages } = await this.productosService.tiendaPages(
+      page,
+      categoria,
+      precioDesde,
+      precioHasta,
     );
     return { productos, totalPages };
   }

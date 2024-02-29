@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
-
-import UserOne from '../images/user/user-01.png';
+import { Link, useNavigate } from 'react-router-dom';
+import Logo from '../images/logo/logo-dark.svg';
+import Cookies from 'universal-cookie';
+import toast from 'react-hot-toast';
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
+  const cookie = new Cookies();
+  const navigate = useNavigate();
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
 
@@ -35,6 +37,17 @@ const DropdownUser = () => {
     return () => document.removeEventListener('keydown', keyHandler);
   });
 
+  const handleLogout = async (e: any) => {
+    e.preventDefault();
+    try {
+      toast.success('Cerrando sesión...');
+      cookie.remove('token', { path: '/' });
+      navigate('/auth/login');
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <div className="relative">
       <Link
@@ -43,15 +56,9 @@ const DropdownUser = () => {
         className="flex items-center gap-4"
         to="#"
       >
-        <span className="hidden text-right lg:block">
-          <span className="block text-sm font-medium text-black dark:text-white">
-            Admin
-          </span>
-          {/* <span className="block text-xs">Admin</span> */}
-        </span>
 
-        <span className="h-12 w-12 rounded-full bg-meta-3">
-          {/* <img src={UserOne} alt="User" /> */}
+        <span className="h-12 w-12 rounded-full overflow-hidden bg-[#fff] flex items-center justify-center">
+          <img src={Logo} alt="User" />
           
         </span>
 
@@ -156,7 +163,10 @@ const DropdownUser = () => {
             </Link>
           </li>
         </ul>
-        <button className="flex items-center gap-3.5 py-4 px-6 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+        <button 
+        className="flex items-center gap-3.5 py-4 px-6 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
+        onClick={(e) => handleLogout(e)}
+        >
           <svg
             className="fill-current"
             width="22"
@@ -174,7 +184,7 @@ const DropdownUser = () => {
               fill=""
             />
           </svg>
-          Log Out
+          Cerrar Sesión
         </button>
       </div>
       {/* <!-- Dropdown End --> */}
@@ -183,3 +193,4 @@ const DropdownUser = () => {
 };
 
 export default DropdownUser;
+

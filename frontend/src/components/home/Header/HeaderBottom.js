@@ -48,7 +48,7 @@ const HeaderBottom = () => {
 
       // Simulación de resultados (reemplaza con tu lógica real)
       const resultadosSimulados = await axios.get(constantes.API_URL + `productos/search/${query}`)
-
+      console.log(resultadosSimulados.data)
       // Almacenar los resultados en las consultas previas
       consultasPreviasRef.current[query] = resultadosSimulados.data;
       setResultados(resultadosSimulados.data);
