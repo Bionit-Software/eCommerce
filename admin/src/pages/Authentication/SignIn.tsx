@@ -21,23 +21,21 @@ const SignIn = () => {
   , []);
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    setLoading(true);
     try {
+      setLoading(true);
       const res = await axios.post(URL.API_URL + 'usuarios/login', {
         nombre: email,
         contrasena: password
-      }).then((res) => {
-        if (res.data.status === 200) {
-          toast.success('Inicio de sesión exitoso');
-          // necesito cookies aca para guardar el estado de la sesion
-          cookies.set('token', 'logeado', { path: '/' });  
-        } else if (res.data.status === 400) {
-          toast.error(res.data.message);
-        }
+      })
+      if(res.data.status === 200){
+        cookies.set('token', res.data.token, { path: '/', maxAge: 604800 });
+        setLoading(false);
+        toast.success(res.data.message);
+        navigate('/');
+      } else {
+        setLoading(false);
+        toast.error(res.data.message);
       }
-      );
-      navigate('/');
-      setLoading(false);
     } catch (error) {
       setLoading(false);
       toast.error('Error al iniciar sesión');
@@ -265,15 +263,6 @@ const SignIn = () => {
                     Iniciar Sesión
                   </button>
                 </div>
-
-                {/* <div className="mt-6 text-center">
-                  <p>
-                    Don’t have any account?{' '}
-                    <Link to="/auth/signup" className="text-primary">
-                      Sign Up
-                    </Link>
-                  </p>
-                </div> */}
               </form>
             </div>
           </div>

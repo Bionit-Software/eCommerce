@@ -26,9 +26,15 @@ export class MercadopagoController {
     return this.mercadopagoService.findAll();
   }
 
-  @Get('facturas')
-  async facturas() {
-    return this.mercadopagoService.facturas();
+  @Get('facturas/totalPages')
+  async totalPages() {
+    const totalPages = this.mercadopagoService.totalPages();
+    return totalPages;
+  }
+
+  @Get('facturas/pages/:page')
+  async facturas(@Param('page') page: number) {
+    return this.mercadopagoService.facturas(page);
   }
 
   // @Patch(':id')

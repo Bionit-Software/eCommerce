@@ -361,6 +361,39 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                               Footer
                             </NavLink>
                           </li>
+                          <li>
+                            <NavLink
+                              to="/paginas/terminos-condiciones"
+                              className={({ isActive }) =>
+                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                (isActive && '!text-white')
+                              }
+                            >
+                              Terminos y Condiciones
+                            </NavLink>
+                          </li>
+                          <li>
+                            <NavLink
+                              to="/paginas/politica-privacidad"
+                              className={({ isActive }) =>
+                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                (isActive && '!text-white')
+                              }
+                            >
+                              Politica y Privacidad
+                            </NavLink>
+                          </li>
+                          <li>
+                            <NavLink
+                              to="/paginas/preguntas-frecuentes"
+                              className={({ isActive }) =>
+                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                (isActive && '!text-white')
+                              }
+                            >
+                              Preguntas Frecuentes
+                            </NavLink>
+                          </li>
                         </ul>
 
                       </div>

@@ -44,11 +44,6 @@ export class PaginasController {
     return this.paginasService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.paginasService.findOne(+id);
-  }
-
   @Put('principal/slider/update')
   @UseInterceptors(
     FilesInterceptor('files', 4, {
@@ -69,8 +64,26 @@ export class PaginasController {
     return this.paginasService.update(req.body, req.files);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.paginasService.remove(+id);
+  @Get('politicas-privacidad')
+  async findPoliticaPrivacidad() {
+    console.log('findAllPoliticaPrivacidad');
+    return this.paginasService.findPoliticaPrivacidad();
   }
+
+  @Put('politicas-privacidad/update')
+  async updatePoliticaPrivacidad(@Request() req): Promise<any> {
+    return this.paginasService.updatePoliticaPrivacidad(req.body);
+  }
+
+  @Get('terminos-condiciones')
+  async findTerminosCondiciones() {
+    console.log('findTerminosCondiciones');
+    return this.paginasService.findTerminosCondiciones();
+  }
+
+  @Put('terminos-condiciones/update')
+  async updateTerminosCondiciones(@Request() req): Promise<any> {
+    return this.paginasService.updateTerminosCondiciones(req.body);
+  }
+
 }

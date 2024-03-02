@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { MercadoPagoConfig, Payment, Preference } from 'mercadopago';
 import db from 'src/db';
-import { ResultSetHeader } from 'mysql2';
+import { ResultSetHeader, RowDataPacket } from 'mysql2';
 import * as nodemailer from 'nodemailer';
 const client = new MercadoPagoConfig({
   accessToken:
-    // 'TEST-3284764560087056-020209-ab62d2134e27be274847edd0d1128763-1393479532', //para pruebas locales
-    'APP_USR-6529193745095712-022112-08e931b1b75d1dd91721c26d292e95d5-1688403407',
+    'TEST-3284764560087056-020209-ab62d2134e27be274847edd0d1128763-1393479532', //para pruebas locales
+  // 'APP_USR-6529193745095712-022112-08e931b1b75d1dd91721c26d292e95d5-1688403407',
 });
 @Injectable()
 export class MercadopagoService {
@@ -93,7 +93,7 @@ export class MercadopagoService {
       });
       console.log('Message sent: %s', info.messageId);
       console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-      return res.init_point;
+      return res.sandbox_init_point;
     } catch (error) {
       console.error('Error:', error);
       throw error;
@@ -132,9 +132,10 @@ export class MercadopagoService {
     return `This action removes a #${id} mercadopago`;
   }
 
-  async facturas() {
-    const [facturas] = await db.query(`
-    SELECT 
+  async totalPages() {
+    const itemsPerPage = 12; // total de productos por pages
+    const [result] = await db.query<RowDataPacket[]>(
+      `SELECT 
       clientes.*, 
       compras.id AS id_compra,
       compras.fecha,
@@ -153,7 +154,66 @@ export class MercadopagoService {
       productos ON detallescompra.id_producto = productos.id
     GROUP BY
       compras.id
-  `);
-    return facturas;
+    ORDER BY id_compra DESC`,
+    );
+    // console.log(result.length);
+    const totalPages = Math.ceil(result.length / itemsPerPage);
+    console.log(totalPages);
+    return totalPages;
+  }
+
+  async facturas(page: number) {
+    const itemsPerPage = 12; // total de productos por página
+    const offset = (page - 1) * itemsPerPage;
+    const [facturas] = await db.query<RowDataPacket[]>(
+      `
+      SELECT 
+      clientes.*, 
+      compras.id AS id_compra,
+      compras.fecha,
+      compras.estado,
+      GROUP_CONCAT(detallescompra.id_producto) AS id_productos,
+      GROUP_CONCAT(detallescompra.cantidad) AS cantidades,
+      GROUP_CONCAT(detallescompra.precio_unitario) AS precios_unitarios,
+      GROUP_CONCAT(productos.nombre) AS nombres_productos,
+      (SELECT GROUP_CONCAT(imagenesproducto.url) 
+       FROM imagenesproducto 
+       WHERE productos.id = imagenesproducto.productoId
+      ) AS imagenes_productos
+  FROM 
+      compras
+  JOIN 
+      clientes ON compras.id_cliente = clientes.id
+  JOIN 
+      detallescompra ON compras.id = detallescompra.id_compra
+  JOIN 
+      productos ON detallescompra.id_producto = productos.id
+  GROUP BY
+      compras.id
+  ORDER BY 
+      id_compra DESC LIMIT ?, ?`,
+      [offset, itemsPerPage],
+    );
+    console.log(facturas);
+    const productos = facturas.map((factura: any) => {
+      const idProductos = factura.id_productos.split(',');
+      const cantidades = factura.cantidades.split(',');
+      const preciosUnitarios = factura.precios_unitarios.split(',');
+      const nombresProductos = factura.nombres_productos.split(',');
+      const productos = idProductos.map((id: any, index: number) => {
+        return {
+          id,
+          nombre: nombresProductos[index],
+          cantidad: cantidades[index],
+          precio_unitario: preciosUnitarios[index],
+          imagen: factura.imagenes_productos.split(',')[index],
+        };
+      });
+      return {
+        ...factura,
+        productos,
+      };
+    });
+    return productos;
   }
 }

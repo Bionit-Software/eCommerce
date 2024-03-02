@@ -5,6 +5,7 @@ import * as fs from 'fs/promises';
 // import { CreateProductoDto } from './dto/create-producto.dto';
 // import { UpdateProductoDto } from './dto/update-producto.dto';
 import db from 'src/db';
+import constantes from 'src/constantes';
 @Injectable()
 export class ProductosService {
   async create(createProductoDto: any, filenames: any[]) {
@@ -24,10 +25,7 @@ export class ProductosService {
       for (const filename of filenames) {
         await db.query(
           'INSERT INTO imagenesproducto (url, productoId) VALUES (?, ?)',
-          [
-            'https://api.tiendadeautor.ar/uploads/' + filename.filename,
-            productoId,
-          ],
+          [constantes.API_URL + 'uploads/' + filename.filename, productoId],
         );
       }
 
@@ -101,7 +99,11 @@ export class ProductosService {
         [nombre, descripcion, precio, stock, idCategoria, idMarca, id],
       );
       // const uploadDirectory = path.join(__dirname, '../..', 'uploads'); // entorno local
-      const uploadDirectory = path.join(__dirname, '..', 'uploads'); //produccion
+      const uploadDirectory = path.join(
+        __dirname,
+        constantes.PUNTOS,
+        'uploads',
+      ); //produccion
       if (photosRemoved !== '') {
         for (const photo of removedPhotos) {
           const url = photo.split('/').pop();
@@ -117,7 +119,7 @@ export class ProductosService {
         for (const filename of filenames) {
           db.query(
             'INSERT INTO imagenesproducto (url, productoId) VALUES (?, ?)',
-            ['https://api.tiendadeautor.ar/uploads/' + filename.filename, id],
+            [constantes.API_URL + 'uploads/' + filename.filename, id],
           );
         }
       }

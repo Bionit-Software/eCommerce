@@ -16,6 +16,10 @@ const Buttons = lazy(() => import('../pages/UiElements/Buttons'));
 const Paginas = lazy(() => import('../pages/Paginas'));
 const Facturas = lazy(() => import('../pages/Facturas'));
 const Principal = lazy(() => import('../pages/Principal'));
+const Footer = lazy(() => import('../pages/Footer'));
+const TerminosCondiciones = lazy(() => import('../pages/TerminosCondiciones'));
+const PoliticaPrivacidad = lazy(() => import('../pages/PoliticaPrivacidad'));
+const PreguntasFrecuentes = lazy(() => import('../pages/PreguntasFrecuentes'));
 
 const coreRoutes = [
   {
@@ -97,6 +101,26 @@ const coreRoutes = [
     path: '/paginas/principal',
     title: 'Principal',
     component: Principal,
+  },
+  {
+    path: '/paginas/footer',
+    title: 'Footer',
+    component: Footer,
+  },
+  {
+    path: '/paginas/terminos-condiciones',
+    title: 'Términos y Condiciones',
+    component: TerminosCondiciones,
+  },
+  {
+    path: '/paginas/politica-privacidad',
+    title: 'Política de Privacidad',
+    component: PoliticaPrivacidad,
+  },
+  {
+    path: '/paginas/preguntas-frecuentes',
+    title: 'Preguntas Frecuentes',
+    component: PreguntasFrecuentes,
   }
 ];
 

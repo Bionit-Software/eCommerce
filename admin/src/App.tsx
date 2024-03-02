@@ -46,7 +46,6 @@ function App() {
       />
       <Routes>
         <Route path="/auth/login" element={<SignIn />} />
-        <Route path="/auth/register" element={<SignUp />} />
         <Route element={<DefaultLayout />}>
           <Route index element={<ECommerce />} />
           {routes.map((route, index) => (
