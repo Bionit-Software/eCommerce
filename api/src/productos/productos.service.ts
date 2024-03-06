@@ -47,8 +47,11 @@ export class ProductosService {
   }
 
   async findFirstTwelve() {
+    const queryDolar = 'SELECT valor FROM dolar WHERE id = 1';
+    const [dolarResult] = await db.query(queryDolar);
+    const valorDolar = dolarResult[0].valor;
     const [productos] = await db.query(
-      `SELECT p.id, p.nombre, p.descripcion, p.precio, p.stock, p.idCategoria, p.idMarca, p.createdAt, p.updatedAt, GROUP_CONCAT(ip.url) AS imagenes
+      `SELECT p.id, p.nombre, p.descripcion, p.precio * ${valorDolar} AS precio, p.stock, p.idCategoria, p.idMarca, p.createdAt, p.updatedAt, GROUP_CONCAT(ip.url) AS imagenes
       FROM productos p
       LEFT JOIN imagenesproducto ip ON p.id = ip.productoId
       GROUP BY p.id LIMIT 12`,
@@ -57,8 +60,11 @@ export class ProductosService {
   }
 
   async findOneById(id: number) {
+    const queryDolar = 'SELECT valor FROM dolar WHERE id = 1';
+    const [dolarResult] = await db.query(queryDolar);
+    const valorDolar = dolarResult[0].valor;
     const [producto] = await db.query(
-      `SELECT p.id, p.nombre, p.descripcion, p.precio, p.stock, p.idCategoria, p.idMarca, p.createdAt, p.updatedAt, GROUP_CONCAT(ip.url) AS imagenes
+      `SELECT p.id, p.nombre, p.descripcion, p.precio * ${valorDolar} AS precio, p.stock, p.idCategoria, p.idMarca, p.createdAt, p.updatedAt, GROUP_CONCAT(ip.url) AS imagenes
     FROM productos p
     LEFT JOIN imagenesproducto ip ON p.id = ip.productoId
     WHERE p.id = ?
@@ -200,6 +206,9 @@ export class ProductosService {
     console.log(categoria, 'categoria');
     console.log(precioDesde, 'precioDesde');
     console.log(precioHasta, 'precioHasta');
+    const queryDolar = 'SELECT valor FROM dolar WHERE id = 1';
+    const [dolarResult] = await db.query(queryDolar);
+    const valorDolar = dolarResult[0].valor;
 
     const itemsPerPage = 12; // Total de productos por página
     const offset = (page - 1) * itemsPerPage;
@@ -218,7 +227,7 @@ export class ProductosService {
       }
     }
 
-    const query = `SELECT p.id, p.nombre, p.descripcion, p.precio, p.stock, p.idCategoria, p.idMarca, p.createdAt, p.updatedAt, GROUP_CONCAT(ip.url) AS imagenes
+    const query = `SELECT p.id, p.nombre, p.descripcion, p.precio * ${valorDolar} AS precio, p.stock, p.idCategoria, p.idMarca, p.createdAt, p.updatedAt, GROUP_CONCAT(ip.url) AS imagenes
       FROM productos p
       LEFT JOIN imagenesproducto ip ON p.id = ip.productoId
       ${whereClause}

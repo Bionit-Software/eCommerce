@@ -47,7 +47,6 @@ const TableProductos = () => {
       setLoading(true);
       const response = await axios.get(constants.API_URL + `productos/pages/${page}?searchTerm=${searchTerm}&stockOrder=${stockOrder}&createdOrder=${createdOrder}`);
       setProducts(response.data.productos);
-      console.log(response.data.productos);
       setTotalPages(response.data.totalPages);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -98,8 +97,8 @@ const TableProductos = () => {
     setCurrentPage(1);
   };
 
-  const urlImage = (images) => {
-    const urls = images.split(',');
+  const urlImage = (images: any) => {
+    const urls = images?.split(',');
     return urls[0];
   }
 
@@ -247,50 +246,50 @@ const TableProductos = () => {
               </tr>
             )
             }
-            {products !== undefined && products.map((product: any) => (
+            {products !== undefined && products?.map((product: any) => (
               <tr key={product.ID} className="border-b border-[#eee] dark:border-strokedark">
                 <td className="py-5 px-4 pl-9 xl:pl-11">
                   <div className="flex items-center">
                     <div className="w-16 h-16 mr-3 ">
                       <img
-                        src={urlImage(product.imagenes)}
+                        src={urlImage(product?.imagenes)}
                         alt=""
                         className='w-full h-full object-cover'
                       />
                     </div>
                     <div>
                       <h5 className="font-medium text-black dark:text-white truncate w-50">
-                        {product.nombre}
+                        {product?.nombre}
                       </h5>
                       <p className="text-sm truncate w-50">
-                        {product.descripcion}
+                        {product?.descripcion}
                       </p>
                     </div>
                   </div>
                 </td>
                 <td className="py-5 px-4">
                   <p className="text-black dark:text-white text-center">
-                    {product.precio}
+                    {product?.precio}
                   </p>
                 </td>
                 <td className="py-5 px-4">
                   <p className="text-black dark:text-white text-center">
-                    {product.stock}
+                    {product?.stock}
                   </p>
                 </td>
                 <td className="py-5 px-4">
                   <p className="text-black dark:text-white text-center">
-                    {product.idCategoria}
+                    {product?.idCategoria}
                   </p>
                 </td>
                 <td className="py-5 px-4">
                   <p className="text-black dark:text-white text-center">
-                    {product.idMarca}
+                    {product?.idMarca}
                   </p>
                 </td>
                 <td className="py-5 px-4">
                   <p className="text-black dark:text-white text-center">
-                    {parsearFecha(product.createdAt)}
+                    {parsearFecha(product?.createdAt)}
                   </p>
                 </td>
                 <td className="py-5 px-4">

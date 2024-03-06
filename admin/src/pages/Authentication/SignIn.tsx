@@ -31,7 +31,7 @@ const SignIn = () => {
         cookies.set('token', res.data.token, { path: '/', maxAge: 604800 });
         setLoading(false);
         toast.success(res.data.message);
-        navigate('/');
+        navigate('/facturas');
       } else {
         setLoading(false);
         toast.error(res.data.message);

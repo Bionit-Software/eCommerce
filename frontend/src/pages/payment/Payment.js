@@ -123,17 +123,17 @@ const StepOne = ({ products }) => {
           />
         </div>
       </div>
-      <div className="flex justify-between">
+      <div className="md:flex md:justify-between">
         <Link to="/carrito">
-          <button className="w-52 h-10 bg-primeColor text-white text-lg mt-4 hover:bg-black duration-300">
+          <button className="w-52 h-10 bg-primeColor text-white text-lg mt-4 hover:bg-black duration-300 rounded-lg">
             Volver al Carrito
           </button>
         </Link>
         <button
           onClick={() => handleSubmit(formData, products)}
-          className="w-52 h-10 bg-blue-500 text-white text-lg mt-4 hover:bg-black duration-300"
+          className="w-auto px-4 h-10 md:h-auto bg-blue-500 text-white text-lg mt-4 hover:bg-black duration-300 rounded-lg drop-shadow-md"
         >
-          Comprar
+          Comprar por Mercadopago
         </button>
 
       </div>

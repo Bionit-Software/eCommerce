@@ -11,22 +11,24 @@ import Cookies from 'universal-cookie';
 const DefaultLayout = lazy(() => import('./layout/DefaultLayout'));
 
 function App() {
-  const [loading, setLoading] = useState<boolean>(true);
+  // const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
   const cookies = new Cookies();
   const token = cookies.get('token');
 
+  // useEffect(() => {
+  //   setTimeout(() => setLoading(false), 1000);
+  // }, []);
+
+  // if (loading) {
+  //   return <Loader />;
+  // }
   useEffect(() => {
-    setTimeout(() => setLoading(false), 1000);
-  }, []);
-
-  if (loading) {
-    return <Loader />;
+    if (!token) {
+      navigate('/auth/login');
+    }
   }
-
-  if (!token) {
-    navigate('/auth/login');
-  }
+    , [token, navigate]);
 
   return (
     <>

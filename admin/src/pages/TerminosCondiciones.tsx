@@ -63,10 +63,14 @@ function TerminosCondiciones() {
 
   return (
     <div>
-      <div className="md:flex md:justify-between">
+      <div className="md:flex md:justify-between mb-4">
         <Breadcrumb pageName="Terminos y Condiciones" />
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={handleSave}>Guardar</button>
+        <button
+          className="rounded bg-primary px-6 font-medium text-gray hover:shadow-1 h-10"
+          onClick={handleSave}
+        >
+          Guardar
+        </button>
       </div>
       <SunEditor
         getSunEditorInstance={getSunEditorInstance}

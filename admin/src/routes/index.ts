@@ -19,8 +19,14 @@ const Principal = lazy(() => import('../pages/Principal'));
 const Footer = lazy(() => import('../pages/Footer'));
 const TerminosCondiciones = lazy(() => import('../pages/TerminosCondiciones'));
 const PoliticaPrivacidad = lazy(() => import('../pages/PoliticaPrivacidad'));
-const PreguntasFrecuentes = lazy(() => import('../pages/PreguntasFrecuentes'));
-
+const TablesPreguntas = lazy(() => import('../pages/TablesPreguntas'));
+const PreguntasEdit = lazy(() => import('../pages/PreguntasEdit'));
+const Contactos = lazy(() => import('../pages/Contactos/Contactos'));
+const ContactoView = lazy(() => import('../pages/Contactos/ContactoView'));
+const Email = lazy(() => import('../pages/Email'));
+const Subscripciones = lazy(() => import('../pages/Subscripciones'));
+const Arrepentimientos = lazy(() => import('../pages/Arrepentimientos/Arrepentimientos'));
+const ArrepentimientosView = lazy(() => import('../pages/Arrepentimientos/ArrepentimientosView'));
 const coreRoutes = [
   {
     path: '/calendar',
@@ -120,8 +126,44 @@ const coreRoutes = [
   {
     path: '/paginas/preguntas-frecuentes',
     title: 'Preguntas Frecuentes',
-    component: PreguntasFrecuentes,
-  }
+    component: TablesPreguntas,
+  },
+  {
+    path: '/paginas/preguntas-frecuentes/edit',
+    title: 'Editar Pregunta',
+    component: PreguntasEdit,
+  },
+  {
+    path: '/contactos',
+    title: 'Contactos',
+    component: Contactos,
+  },
+  {
+    path: '/contacto/view/:id',
+    title: 'Contacto vista',
+    component: ContactoView,
+  },
+  {
+    path: '/arrepentimientos',
+    title: 'Arrepentimientos',
+    component: Arrepentimientos,
+  },
+  {
+    path: '/arrepentimiento/view/:id',
+    title: 'Arrepentimientos vista',
+    component: ArrepentimientosView,
+  },
+  {
+    path: '/email',
+    title: 'Personalizar Email',
+    component: Email,
+  },
+  {
+    path: '/subscripciones',
+    title: 'Subscripciones',
+    component: Subscripciones,
+  },
+
 ];
 
 const routes = [...coreRoutes];

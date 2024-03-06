@@ -82,12 +82,12 @@ const TableFacturas = () => {
           >
             Cerrar
           </button>
-          <button
+          {/* <button
             className="bg-error text-white px-4 py-2 rounded-md"
             onClick={() => window.open(constants.API_URL + 'mercadopago/facturas/pdf/' + modalData.id_compra, '_blank')}
           >
             Pdf
-          </button>
+          </button> */}
         </div>
       </div>
     )

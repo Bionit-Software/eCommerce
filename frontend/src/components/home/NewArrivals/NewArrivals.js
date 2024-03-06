@@ -73,7 +73,9 @@ const NewArrivals = ({ productos }) => {
                   precio={producto.precio}
                   // color="Black"
                   // badge={true}
-                  des={producto.descripcion}
+                  descripcion={producto.descripcion}
+                  idMarca={producto.idMarca}
+                  idCategoria={producto.idCategoria}
                   stock={producto.stock}
                 />
               </Suspense>

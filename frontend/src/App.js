@@ -26,6 +26,10 @@ import { FloatingWhatsApp } from "react-floating-whatsapp";
 import { logoLight } from "./assets/images";
 import Exito from "./pages/Mercadopago/Exito";
 import Error from "./pages/Mercadopago/Error";
+import TerminosCondiciones from "./pages/TerminosCondiciones";
+import PoliticasPrivacidad from "./pages/PoliticasPrivacidad";
+import PreguntasFrecuentes from "./pages/PreguntasFrecuentes";
+import Arrepentimiento from "./pages/Arrepentimiento";
 
 const Layout = () => {
   return (
@@ -69,6 +73,10 @@ const router = createBrowserRouter(
         <Route path="/parcela-pago" element={<Payment />}></Route>
         <Route path="/exito" element={<Exito />}></Route>
         <Route path="/error" element={<Error />}></Route>
+        <Route path="/terminos-condiciones" element={<TerminosCondiciones />}></Route>
+        <Route path="/politica-privacidad" element={<PoliticasPrivacidad />}></Route>
+        <Route path="/preguntas-frecuentes" element={<PreguntasFrecuentes />}></Route>
+        <Route path="/arrepentimiento" element={<Arrepentimiento />}></Route>
       </Route>
       <Route path="/signup" element={<SignUp />}></Route>
       <Route path="/signin" element={<SignIn />}></Route>

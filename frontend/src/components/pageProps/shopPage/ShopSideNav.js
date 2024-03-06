@@ -19,7 +19,7 @@ const ShopSideNav = ({ updateCategoria, updatePrecio }) => {
   return (
     <div className="w-full flex justify-start md:flex-col gap-6">
       <Categorias handleFilterChangeCategoria={handleFilterChangeCategoria} />
-      <Price handleFilterChangePrecio={handleFilterChangePrecio} />
+      {/* <Price handleFilterChangePrecio={handleFilterChangePrecio} /> */}
     </div>
   );
 };

@@ -9,6 +9,7 @@ import { MarcasModule } from './marcas/marcas.module';
 import { MercadopagoModule } from './mercadopago/mercadopago.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import { PaginasModule } from './paginas/paginas.module';
+import { DolarModule } from './dolar/dolar.module';
 @Module({
   imports: [
     ServeStaticModule.forRoot({
@@ -24,6 +25,7 @@ import { PaginasModule } from './paginas/paginas.module';
     MercadopagoModule,
     UsuariosModule,
     PaginasModule,
+    DolarModule,
   ],
   controllers: [ProductosController],
   providers: [ProductosService],

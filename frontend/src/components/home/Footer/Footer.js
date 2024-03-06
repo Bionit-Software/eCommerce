@@ -95,16 +95,16 @@ const Footer = () => {
           <FooterListTitle title="Otros" />
           <ul className="flex flex-col gap-2">
             <li className="font-titleFont text-base text-lightText hover:text-black hover:underline decoration-[1px] decoration-gray-500 underline-offset-2 cursor-pointer duration-300">
-              Términos y condiciones
+              <Link to={`/terminos-condiciones`}>Términos y condiciones</Link>
             </li>
             <li className="font-titleFont text-base text-lightText hover:text-black hover:underline decoration-[1px] decoration-gray-500 underline-offset-2 cursor-pointer duration-300">
-              Política de privacidad
+              <Link to={`/politica-privacidad`}>Política de privacidad</Link>
             </li>
             <li className="font-titleFont text-base text-lightText hover:text-black hover:underline decoration-[1px] decoration-gray-500 underline-offset-2 cursor-pointer duration-300">
-              Preguntas frecuentes
+              <Link to={`/preguntas-frecuentes`}>Preguntas frecuentes</Link>
             </li>
             <li className="font-titleFont text-base text-lightText hover:text-black hover:underline decoration-[1px] decoration-gray-500 underline-offset-2 cursor-pointer duration-300">
-              Botón de arrepentimiento
+              <Link to={`/arrepentimiento`}>Arrepentimiento</Link>
             </li>
           </ul>
         </div>

@@ -5,8 +5,8 @@ import { ResultSetHeader, RowDataPacket } from 'mysql2';
 import * as nodemailer from 'nodemailer';
 const client = new MercadoPagoConfig({
   accessToken:
-    'TEST-3284764560087056-020209-ab62d2134e27be274847edd0d1128763-1393479532', //para pruebas locales
-  // 'APP_USR-6529193745095712-022112-08e931b1b75d1dd91721c26d292e95d5-1688403407',
+    // 'TEST-3284764560087056-020209-ab62d2134e27be274847edd0d1128763-1393479532', //para pruebas locales
+    'APP_USR-6529193745095712-022112-08e931b1b75d1dd91721c26d292e95d5-1688403407',
 });
 @Injectable()
 export class MercadopagoService {
@@ -50,50 +50,7 @@ export class MercadopagoService {
       };
       const preference = new Preference(client);
       const res = await preference.create({ body });
-      const transporter = nodemailer.createTransport({
-        host: 'pampa.whservers.net',
-        port: 465, //465 es true, sino false
-        secure: true,
-        auth: {
-          user: 'no-reply@tiendadeautor.ar',
-          pass: '{+gQbtSivj$)',
-        },
-      });
-      const info = await transporter.sendMail({
-        from: '"Tienda de Autor" <no-reply@tiendadeautor.ar>',
-        to: data.formData.email,
-        subject: 'Compra en Tienda de Autor',
-        text: 'Gracias por su compra!',
-        html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ccc; border-radius: 5px;">
-      <img src="https://api.tiendadeautor.ar/uploads/logo.jpg" alt="Tienda de Autor" style="max-width: 100%; height: auto; margin-bottom: 20px;">
-      <h2 style="color: #007bff; margin-bottom: 10px;">¡Gracias por tu compra en Tienda de Autor!</h2>
-      <p>Hola ${data.formData.nombreApellido},</p>
-      <p>Queremos agradecerte por haber realizado una compra en nuestra tienda.</p>
-      <p>Resumen de tu compra:</p>
-      <ul style="list-style: none; padding-left: 0;">
-        ${data.products
-          .map(
-            (item: any) => `
-          <li style="margin-bottom: 20px;">
-            <img src="${item.image}" alt="${item.name}" style="max-width: 100px; height: auto; margin-right: 10px; vertical-align: middle;">
-            <span style="vertical-align: middle;">${item.name}: ${item.quantity} x $${item.price}</span>
-          </li>
-        `,
-          )
-          .join('')}
-      </ul>
-      <p style="font-weight: bold;">El total de tu compra es: $${data.products.reduce((total: any, item: any) => total + item.quantity * item.price, 0).toFixed(2)}</p>
-      <p style="margin-top: 20px;">Si tienes alguna pregunta o necesitas asistencia, no dudes en ponerte en contacto con nosotros.</p>
-      <p>¡Esperamos que disfrutes de tus productos!</p>
-      <p>Atentamente,</p>
-      <p>Equipo de Tienda de Autor</p>
-    </div>
-      `,
-      });
-      console.log('Message sent: %s', info.messageId);
-      console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-      return res.sandbox_init_point;
+      return res.init_point;
     } catch (error) {
       console.error('Error:', error);
       throw error;
@@ -117,6 +74,78 @@ export class MercadopagoService {
         item.category_id,
       ]);
     });
+    const [searchResult] = await db.query(
+      'SELECT id_cliente FROM compras WHERE id = ?',
+      [payment.additional_info.items[0].category_id],
+    );
+    // Consultar la información del cliente
+    const clienteResult = await db.query<RowDataPacket[]>(
+      'SELECT * FROM clientes WHERE id = ?',
+      [searchResult[0].id_cliente],
+    );
+    const cliente = clienteResult[0]; // Aquí está la información del cliente
+    console.log(cliente);
+    const [productosComprados] = await db.query<RowDataPacket[]>(
+      `SELECT 
+      productos.nombre,
+      GROUP_CONCAT(imagenesproducto.url) AS imagenes,
+      detallescompra.cantidad AS cantidad,
+      detallescompra.precio_unitario
+  FROM
+      detallescompra
+  JOIN
+      productos ON detallescompra.id_producto = productos.id
+  JOIN
+      imagenesproducto ON productos.id = imagenesproducto.productoId
+  WHERE
+      detallescompra.id_compra = ?
+  GROUP BY
+      productos.id,
+      detallescompra.precio_unitario`,
+      [payment.additional_info.items[0].category_id],
+    );
+    console.log(productosComprados);
+    const transporter = nodemailer.createTransport({
+      host: 'pampa.whservers.net',
+      port: 465, //465 es true, sino false
+      secure: true,
+      auth: {
+        user: 'no-reply@tiendadeautor.ar',
+        pass: '{+gQbtSivj$)',
+      },
+    });
+    const info = await transporter.sendMail({
+      from: '"Tienda de Autor" <no-reply@tiendadeautor.ar>',
+      to: cliente[0].email,
+      subject: 'Compra en Tienda de Autor',
+      text: 'Gracias por su compra!',
+      html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ccc; border-radius: 5px;">
+    <img src="https://api.tiendadeautor.ar/uploads/LogoFondo.jpg" alt="Tienda de Autor" style="max-width: 100%; height: auto; margin-bottom: 20px;">
+    <h2 style="color: #007bff; margin-bottom: 10px;">¡Gracias por tu compra en Tienda de Autor!</h2>
+    <p>Hola ${cliente[0].nombreApellido},</p>
+    <p>Queremos agradecerte por haber realizado una compra en nuestra tienda.</p>
+    <ul>
+      ${productosComprados.map(
+        (producto: any) =>
+          `<li>
+          <img src="${producto.imagenes.split(',')[0]}" alt="${producto.nombre}" style="max-width: 100px; height: auto;">
+          <p>${producto.cantidad} x ${producto.nombre} - $${producto.precio_unitario}</p>
+        </li>`,
+      )}
+    <p>Resumen de tu compra:</p>
+    <p>Orden de compra: ${payment.additional_info.items[0].category_id}</p>
+    <p style="font-weight: bold;">El total de tu compra es: $${payment.transaction_amount}</p>
+    <p style="margin-top: 20px;">Si tienes alguna pregunta o necesitas asistencia, no dudes en ponerte en contacto con nosotros.</p>
+    <p>¡Esperamos que disfrutes de tus productos!</p>
+    <p>Atentamente,</p>
+    <p>Equipo de Tienda de Autor</p>
+    <Tienes alguna pregunta? Contáctanos: <a href="https://tiendadeautor.ar/contacto">tiendadeautor.ar/contacto</a>
+  </div>
+    `,
+    });
+    console.log('Message sent: %s', info.messageId);
+    console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
     return Response.json({ success: true });
   }
 
